@@ -2,8 +2,9 @@ const env = process.env.NODE_ENV || 'development';
 
 if (env === 'development') {
   require('dotenv').config();
-} else {
+} else if (env === 'test') {
   require('dotenv').config({ path: './.env.test' });
+  console.log('testing...');
 }
 
 const express = require('express');
@@ -26,3 +27,5 @@ app.use('/auth', authRoutes);
 app.listen(port, () => {
   console.log(`Server is live on port ${port}`);
 });
+
+module.exports = app;

@@ -12,15 +12,16 @@ const UserSchema = new mongoose.Schema({
   username: {
     type: String,
     required: true,
-    minLength: 6
+    minlength: 6
   },
   handle: {
     type: String,
     required: true,
-    minLength: 6
+    minlength: 6
   },
   email: {
     type: String,
+    unique: true,
     required: true,
     validate: {
       validator: validator.isEmail,
@@ -104,6 +105,7 @@ const UserSchema = new mongoose.Schema({
   ],
   messages: [
     {
+      _id: false,
       body: {
         type: String,
         required: true
@@ -120,6 +122,7 @@ const UserSchema = new mongoose.Schema({
   ],
   notifications: [
     {
+      _id: false,
       message: {
         type: String,
         required: true

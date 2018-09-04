@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
+const _ = require('lodash');
 
 const UserSchema = new mongoose.Schema({
   username: {
@@ -148,6 +149,23 @@ UserSchema.pre('save', function(next) {
     next();
   }
 });
+
+UserSchema.methods.toJSON = function() {
+  const user = this;
+  const userObj = user.toObject();
+
+  return _.pick(userObj, [
+    'username',
+    'handle',
+    'bio',
+    'photo',
+    'coverPhoto',
+    'followers',
+    'following',
+    'messages',
+    'notifications'
+  ]);
+};
 
 const User = mongoose.model('User', UserSchema);
 

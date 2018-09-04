@@ -1,7 +1,17 @@
+const env = process.env.NODE_ENV || 'development';
+
+if (env === 'development') {
+  require('dotenv').config();
+} else {
+  require('dotenv').config({ path: './.env.test' });
+}
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const path = require('path');
+
+const mongoose = require('./db/mongoose');
 
 const app = express();
 const publicPath = path.join(__dirname, '..', 'public');

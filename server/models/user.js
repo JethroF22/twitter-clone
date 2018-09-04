@@ -2,20 +2,26 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
 const _ = require('lodash');
+const jwt = require('jsonwebtoken');
 
 const UserSchema = new mongoose.Schema({
+  token: {
+    type: String,
+    required: true
+  },
   username: {
     type: String,
     required: true,
-    minLength: 6
+    minlength: 6
   },
   handle: {
     type: String,
     required: true,
-    minLength: 6
+    minlength: 6
   },
   email: {
     type: String,
+    unique: true,
     required: true,
     validate: {
       validator: validator.isEmail,
@@ -99,6 +105,7 @@ const UserSchema = new mongoose.Schema({
   ],
   messages: [
     {
+      _id: false,
       body: {
         type: String,
         required: true
@@ -115,6 +122,7 @@ const UserSchema = new mongoose.Schema({
   ],
   notifications: [
     {
+      _id: false,
       message: {
         type: String,
         required: true
@@ -165,6 +173,18 @@ UserSchema.methods.toJSON = function() {
     'messages',
     'notifications'
   ]);
+};
+
+UserSchema.methods.generateAuthToken = function() {
+  const user = this;
+
+  const token = jwt.sign(
+    {
+      _id: user._id.toHexString()
+    },
+    process.env.SECRET_KEY
+  );
+  user.token = token;
 };
 
 const User = mongoose.model('User', UserSchema);

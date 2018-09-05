@@ -187,6 +187,26 @@ UserSchema.methods.generateAuthToken = function() {
   user.token = token;
 };
 
+UserSchema.statics.findByCredentials = function(
+  { email, password } = { ...credentials }
+) {
+  const User = this;
+
+  return User.findOne({ email }).then(user => {
+    if (!user) return Promise.reject('User not found');
+
+    return new Promise((resolve, reject) => {
+      bcrypt.compare(password, user.password, (err, result) => {
+        if (result) {
+          return resolve(user);
+        } else {
+          return reject('Password does not match');
+        }
+      });
+    });
+  });
+};
+
 const User = mongoose.model('User', UserSchema);
 
 module.exports = User;

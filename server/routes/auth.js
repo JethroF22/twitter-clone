@@ -24,4 +24,16 @@ router.post('/register', (req, res) => {
     .catch(err => res.status(400).send(errorParser(err)));
 });
 
+router.post('/login', (req, res) => {
+  const credentials = _.pick(req.body, ['password', 'email']);
+
+  User.findByCredentials(credentials)
+    .then(user => {
+      res.set('x-auth', user.token).send(user);
+    })
+    .catch(err => {
+      res.status(400).send({ msg: err });
+    });
+});
+
 module.exports = router;

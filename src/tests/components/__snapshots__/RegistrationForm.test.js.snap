@@ -1,0 +1,74 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Registration Form should render correctly 1`] = `
+<div>
+  <h3>
+    Create an account
+  </h3>
+  <form
+    onSubmit={[Function]}
+  >
+    <label
+      htmlFor="username"
+    >
+      Username: 
+    </label>
+    <input
+      name="username"
+      onChange={[Function]}
+      type="text"
+      value=""
+    />
+    <br />
+    <label
+      htmlFor="email"
+    >
+      Email: 
+    </label>
+    <input
+      name="email"
+      onChange={[Function]}
+      type="email"
+      value=""
+    />
+    <br />
+    <label
+      htmlFor="handle"
+    >
+      Handle: 
+    </label>
+    <input
+      name="handle"
+      onChange={[Function]}
+      placeholder="Example: @i_am_jerry"
+      type="text"
+      value=""
+    />
+    <br />
+    <label
+      htmlFor="password"
+    >
+      Password: 
+    </label>
+    <input
+      name="password"
+      onChange={[Function]}
+      type="password"
+      value=""
+    />
+    <br />
+    <label
+      htmlFor="confirmPassword"
+    >
+      Confirm Password: 
+    </label>
+    <input
+      name="confirmPassword"
+      onChange={[Function]}
+      type="password"
+      value=""
+    />
+    <br />
+  </form>
+</div>
+`;

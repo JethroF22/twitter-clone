@@ -1,7 +1,19 @@
 {
-  "actionMessages": {
+  "actionStatusMessages": {
     "SUCCESS_MESSAGE": "Successful",
     "IN_PROGRESS_MESSAGE": "In Progress",
     "FAILED_MESSAGE": "Failed"
+  },
+  "actionTypes": {
+    "auth": {
+      "SET_USER_DETAILS": "SET_USER_DETAILS",
+      "SET_TOKEN": "SET_TOKEN"
+    },
+    "status": {
+      "SET_ACTION_STATUS": "SET_ACTION_STATUS"
+    },
+    "error": {
+      "SET_ERROR_MESSAGE": "SET_ERROR_MESSAGE"
+    }
   }
 }

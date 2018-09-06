@@ -1,0 +1,7 @@
+{
+  "actionMessages": {
+    "SUCCESS_MESSAGE": "Successful",
+    "IN_PROGRESS_MESSAGE": "In Progress",
+    "FAILED_MESSAGE": "Failed"
+  }
+}

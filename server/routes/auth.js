@@ -19,7 +19,7 @@ router.post('/register', (req, res) => {
   user
     .save()
     .then(user => {
-      res.send(user);
+      res.set('x-auth', user.token).send(user);
     })
     .catch(err => res.status(400).send(errorParser(err)));
 });

@@ -21,6 +21,7 @@
   },
   "errorMessages": {
     "VALIDATION_ERROR": "Validation Error",
-    "DUPLICATE_EMAIL": "Duplicate email"
+    "DUPLICATE_EMAIL": "Duplicate email",
+    "UNKNOWN_ERROR": "Unknown DB error"
   }
 }

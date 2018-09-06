@@ -26,8 +26,12 @@ class RegistrationForm extends Component {
   handleChange = e => {
     const { value, name } = e.target;
 
-    this.setState(() => ({
-      [name]: value
+    this.setState(prevState => ({
+      [name]: value,
+      errors: {
+        ...prevState.errors,
+        [name]: ''
+      }
     }));
   };
 

@@ -15,5 +15,12 @@
     "error": {
       "SET_ERROR_MESSAGE": "SET_ERROR_MESSAGE"
     }
+  },
+  "errorTypes": {
+    "DB_ERROR": "DB Error"
+  },
+  "errorMessages": {
+    "VALIDATION_ERROR": "Validation Error",
+    "DUPLICATE_EMAIL": "Duplicate email"
   }
 }

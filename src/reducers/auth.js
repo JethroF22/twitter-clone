@@ -1,5 +1,5 @@
 export default (state = {}, action) => {
-  switch (action.tyep) {
+  switch (action.type) {
     case 'SET_USER_DETAILS':
       return {
         ...state,

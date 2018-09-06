@@ -7,6 +7,6 @@ export default (state = {}, action) => {
     case SET_ERROR_MESSAGE:
       return { errorType: action.errorType, errorMessage: action.errorMessage };
     default:
-      break;
+      return state;
   }
 };

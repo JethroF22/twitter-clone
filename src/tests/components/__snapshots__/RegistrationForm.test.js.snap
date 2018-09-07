@@ -17,7 +17,7 @@ exports[`Registration Form should render correctly 1`] = `
       name="username"
       onChange={[Function]}
       type="text"
-      value=""
+      value="Jethro Fredericks"
     />
     <br />
     <label
@@ -29,7 +29,7 @@ exports[`Registration Form should render correctly 1`] = `
       name="email"
       onChange={[Function]}
       type="email"
-      value=""
+      value="jethro@gmail.com"
     />
     <br />
     <label
@@ -42,7 +42,7 @@ exports[`Registration Form should render correctly 1`] = `
       onChange={[Function]}
       placeholder="Example: @i_am_jerry"
       type="text"
-      value=""
+      value="KingJethro"
     />
     <br />
     <label
@@ -54,7 +54,7 @@ exports[`Registration Form should render correctly 1`] = `
       name="password"
       onChange={[Function]}
       type="password"
-      value=""
+      value="iamjethro"
     />
     <br />
     <label
@@ -66,9 +66,15 @@ exports[`Registration Form should render correctly 1`] = `
       name="confirmPassword"
       onChange={[Function]}
       type="password"
-      value=""
+      value="iamjethro"
     />
     <br />
+    <button
+      disabled={false}
+      type="submit"
+    >
+      Create Account
+    </button>
   </form>
 </div>
 `;

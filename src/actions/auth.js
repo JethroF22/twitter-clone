@@ -5,9 +5,11 @@ import { setError } from './error';
 import {
   actionStatusMessages,
   errorTypes,
-  errorMessages
+  errorMessages,
+  actionTypes
 } from '../config/const.json';
 
+const { SET_USER_DETAILS, SET_TOKEN } = actionTypes.auth;
 const {
   IN_PROGRESS_MESSAGE,
   SUCCESS_MESSAGE,
@@ -19,12 +21,12 @@ const { DB_ERROR } = errorTypes;
 const apiUrl = process.env.API_URL || '';
 
 export const setUserDetails = ({ username, handle } = { ...userDetails }) => ({
-  type: 'SET_USER_DETAILS',
+  type: SET_USER_DETAILS,
   username,
   handle
 });
 
-export const setToken = token => ({ type: 'SET_TOKEN', token });
+export const setToken = token => ({ type: SET_TOKEN, token });
 
 export const registerUser = credentials => {
   return dispatch => {

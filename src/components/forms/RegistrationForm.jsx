@@ -13,7 +13,7 @@ const {
 } = actionStatusMessages;
 const { UNKNOWN_ERROR, DUPLICATE_EMAIL } = errorMessages;
 
-class RegistrationForm extends Component {
+export class RegistrationForm extends Component {
   state = {
     username: '',
     password: '',

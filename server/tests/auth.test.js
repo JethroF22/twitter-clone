@@ -34,6 +34,7 @@ describe('/auth', () => {
         .expect(res => {
           expect(res.body.username).to.equal(user.username);
           expect(res.body.handle).to.equal(user.handle);
+          expect(res.headers['x-auth']).to.be.a('string');
         })
         .end(err => {
           if (err) done(err);

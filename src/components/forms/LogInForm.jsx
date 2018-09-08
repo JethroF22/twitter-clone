@@ -11,6 +11,13 @@ class LogInForm extends Component {
     errors: {}
   };
 
+  onChange = e => {
+    const { value, name } = e.target;
+    this.setState(() => ({
+      [name]: value
+    }));
+  };
+
   render() {
     return (
       <div>
@@ -24,7 +31,7 @@ class LogInForm extends Component {
             type="email"
             name="email"
             value={this.state.email}
-            onChange={() => console.log('Email changed')}
+            onChange={this.onChange}
           />
           <br />
           <label htmlFor="password">Password: </label>
@@ -32,7 +39,7 @@ class LogInForm extends Component {
             type="password"
             name="password"
             value={this.state.password}
-            onChange={() => console.log('Password changed')}
+            onChange={this.onChange}
           />
           <br />
           <button type="submit">Log In</button>

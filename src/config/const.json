@@ -17,11 +17,14 @@
     }
   },
   "errorTypes": {
-    "DB_ERROR": "DB Error"
+    "DB_ERROR": "DB Error",
+    "AUTHENTICATION_ERROR": "Authentication Error"
   },
   "errorMessages": {
     "VALIDATION_ERROR": "Validation Error",
     "DUPLICATE_EMAIL": "Duplicate email",
-    "UNKNOWN_ERROR": "Unknown DB error"
+    "DUPLICATE_HANDLE": "Duplicate handle",
+    "UNKNOWN_ERROR": "Unknown DB error",
+    "INVALID_CREDENTIALS": "Invalid email/password combination"
   }
 }

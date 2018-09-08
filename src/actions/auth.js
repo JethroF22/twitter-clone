@@ -20,9 +20,9 @@ const { DB_ERROR } = errorTypes;
 
 const apiUrl = process.env.API_URL || '';
 
-export const setUserDetails = ({ username, handle } = { ...userDetails }) => ({
+export const setUserDetails = ({ name, handle } = { ...userDetails }) => ({
   type: SET_USER_DETAILS,
-  username,
+  name,
   handle
 });
 

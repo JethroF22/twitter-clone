@@ -14,7 +14,7 @@ export const validateRegistrationForm = formData => {
           errors[key] = 'Passwords must match';
         }
         break;
-      case 'username':
+      case 'name':
       case 'handle':
         if (formData[key].length < 6) {
           errors[key] = `${key.charAt(0).toUpperCase() +

@@ -15,7 +15,7 @@ const { UNKNOWN_ERROR, DUPLICATE_EMAIL } = errorMessages;
 
 export class RegistrationForm extends Component {
   state = {
-    username: '',
+    name: '',
     password: '',
     confirmPassword: '',
     handle: '',
@@ -39,7 +39,7 @@ export class RegistrationForm extends Component {
     e.preventDefault();
 
     const credentials = _.pick(this.state, [
-      'username',
+      'name',
       'email',
       'password',
       'handle'
@@ -77,12 +77,12 @@ export class RegistrationForm extends Component {
           {this.state.errors.registrationError && (
             <p>{this.state.errors.registrationError}</p>
           )}
-          {this.state.errors.username && <p>{this.state.errors.username}</p>}
-          <label htmlFor="username">Username: </label>
+          {this.state.errors.name && <p>{this.state.errors.name}</p>}
+          <label htmlFor="name">Name: </label>
           <input
             type="text"
-            name="username"
-            value={this.state.username}
+            name="name"
+            value={this.state.name}
             onChange={this.handleChange}
           />
           <br />

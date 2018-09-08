@@ -9,12 +9,12 @@ exports[`Registration Form should render correctly 1`] = `
     onSubmit={[Function]}
   >
     <label
-      htmlFor="username"
+      htmlFor="name"
     >
-      Username: 
+      Name: 
     </label>
     <input
-      name="username"
+      name="name"
       onChange={[Function]}
       type="text"
       value="Jethro Fredericks"

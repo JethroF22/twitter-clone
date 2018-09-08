@@ -21,7 +21,7 @@ describe('/auth', () => {
 
     it('should create a new user', done => {
       user = {
-        username: 'Jeremiah',
+        name: 'Jeremiah',
         handle: 'king_jerry',
         email: 'jeremiah@gmail.com',
         password: 'password1234'
@@ -32,7 +32,7 @@ describe('/auth', () => {
         .send(user)
         .expect(200)
         .expect(res => {
-          expect(res.body.username).to.equal(user.username);
+          expect(res.body.name).to.equal(user.name);
           expect(res.body.handle).to.equal(user.handle);
           expect(res.headers['x-auth']).to.be.a('string');
         })
@@ -50,7 +50,7 @@ describe('/auth', () => {
 
     it('should return an error for invalid credentials', done => {
       user = {
-        username: 'Jeff',
+        name: 'Jeff',
         handle: 'jeff',
         email: 'lakjsdfkjkje'
       };
@@ -72,7 +72,7 @@ describe('/auth', () => {
         .send(user)
         .expect(400)
         .expect(res => {
-          expect(res.body[0]).to.equal('This email is already in use');
+          expect(res.body[0].msg).to.equal('Duplicate email');
         })
         .end(done);
     });
@@ -88,7 +88,7 @@ describe('/auth', () => {
         .expect(200)
         .expect(res => {
           expect(res.headers['x-auth']).to.be.a('string');
-          expect(res.body.username).to.equal(user.username);
+          expect(res.body.name).to.equal(user.name);
           expect(res.body.handle).to.equal(user.handle);
         })
         .end(done);

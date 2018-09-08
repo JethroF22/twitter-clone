@@ -5,7 +5,7 @@ const { SET_USER_DETAILS, SET_TOKEN } = actionTypes.auth;
 
 test('should set the user details', () => {
   const userDetails = {
-    username: 'Jethro',
+    name: 'Jethro',
     handle: 'IamKing'
   };
   const state = authReducer({}, { type: SET_USER_DETAILS, ...userDetails });

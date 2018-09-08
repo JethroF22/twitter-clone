@@ -7,12 +7,7 @@ const errorParser = require('../utils/errorParser');
 const router = express.Router();
 
 router.post('/register', (req, res) => {
-  const credentials = _.pick(req.body, [
-    'username',
-    'password',
-    'email',
-    'handle'
-  ]);
+  const credentials = _.pick(req.body, ['name', 'password', 'email', 'handle']);
 
   const user = new User(credentials);
   user.generateAuthToken();

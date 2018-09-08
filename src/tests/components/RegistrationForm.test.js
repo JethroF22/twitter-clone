@@ -6,7 +6,7 @@ import { RegistrationForm } from '../../components/forms/RegistrationForm';
 
 import users from '../seed/seed';
 
-let wrapper, username, registerUserSpy, user, state;
+let wrapper, name, registerUserSpy, user, state;
 
 describe('Registration Form', () => {
   beforeEach(() => {
@@ -15,7 +15,7 @@ describe('Registration Form', () => {
     state = { ...user, confirmPassword: user.password, errors: {} };
     wrapper = shallow(<RegistrationForm registerUser={registerUserSpy} />);
     wrapper.setState(state);
-    username = 'Jethro';
+    name = 'Jethro';
   });
 
   test('should render correctly', () => {
@@ -23,13 +23,13 @@ describe('Registration Form', () => {
   });
 
   test('should handle onChange', () => {
-    wrapper.find('input[name="username"]').prop('onChange')({
+    wrapper.find('input[name="name"]').prop('onChange')({
       target: {
-        name: 'username',
-        value: username
+        name: 'name',
+        value: name
       }
     });
-    expect(wrapper.state('username')).toBe(username);
+    expect(wrapper.state('name')).toBe(name);
   });
 
   test('should handle onSubmit', () => {
@@ -43,19 +43,19 @@ describe('Registration Form', () => {
   test('should display validation errors', () => {
     state = {
       ...state,
-      username: 'Jeff'
+      name: 'Jeff'
     };
-    const usernameError = 'Username must be at least 6 characters';
+    const nameError = 'Name must be at least 6 characters';
     wrapper.setState(state);
     wrapper.find('form').simulate('submit', { preventDefault: () => {} });
     expect(wrapper.state('errors')).toEqual({
-      username: usernameError
+      name: nameError
     });
     expect(
       wrapper
         .find('p')
         .at(0)
         .text()
-    ).toBe(usernameError);
+    ).toBe(nameError);
   });
 });

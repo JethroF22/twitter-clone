@@ -67,7 +67,7 @@ describe('auth actions', () => {
             });
             expect(actions[2]).toEqual({
               type: SET_USER_DETAILS,
-              username: user.username,
+              name: user.name,
               handle: user.handle
             });
             expect(actions[3]).toEqual({ type: SET_TOKEN, token });
@@ -116,7 +116,7 @@ describe('auth actions', () => {
       const action = setUserDetails(user);
       expect(action).toEqual({
         type: SET_USER_DETAILS,
-        username: user.username,
+        name: user.name,
         handle: user.handle
       });
     });

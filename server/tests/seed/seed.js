@@ -11,7 +11,7 @@ const userTwoID = new ObjectID();
 const users = [
   {
     _id: userOneID,
-    username: 'Jethro',
+    name: 'Jethro',
     email: 'jethro@gmail.com',
     handle: 'iamjethro',
     password: 'password1',
@@ -19,7 +19,7 @@ const users = [
   },
   {
     _id: userTwoID,
-    username: 'NariRoh',
+    name: 'NariRoh',
     email: 'nariroh@gmail.com',
     handle: 'iamnari',
     password: 'password2',

@@ -200,14 +200,14 @@ UserSchema.statics.findByCredentials = function(
   const User = this;
 
   return User.findOne({ email }).then(user => {
-    if (!user) return Promise.reject('User not found');
+    if (!user) return Promise.reject('Invalid email/password combination');
 
     return new Promise((resolve, reject) => {
       bcrypt.compare(password, user.password, (err, result) => {
         if (result) {
           return resolve(user);
         } else {
-          return reject('Password does not match');
+          return reject('Invalid email/password combination');
         }
       });
     });

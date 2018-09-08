@@ -15,8 +15,13 @@ const {
   SUCCESS_MESSAGE,
   FAILED_MESSAGE
 } = actionStatusMessages;
-const { DUPLICATE_EMAIL, UNKNOWN_ERROR } = errorMessages;
-const { DB_ERROR } = errorTypes;
+const {
+  DUPLICATE_EMAIL,
+  DUPLICATE_HANDLE,
+  UNKNOWN_ERROR,
+  INVALID_CREDENTIALS
+} = errorMessages;
+const { DB_ERROR, AUTHENTICATION_ERROR } = errorTypes;
 
 const apiUrl = process.env.API_URL || '';
 
@@ -55,14 +60,14 @@ export const registerUser = credentials => {
       })
       .catch(err => {
         const errors = err.response.data;
-        if (
-          errors.length === 1 &&
-          errors[0] === 'This email is already in use'
-        ) {
+        if (errors.length === 1) {
           dispatch(
             setError({
               errorType: DB_ERROR,
-              errorMessage: DUPLICATE_EMAIL
+              errorMessage:
+                errors[0] === DUPLICATE_EMAIL
+                  ? DUPLICATE_EMAIL
+                  : DUPLICATE_HANDLE
             })
           );
         } else {
@@ -77,6 +82,52 @@ export const registerUser = credentials => {
           setActionStatus({
             actionStatus: FAILED_MESSAGE,
             actionName: 'registerUser'
+          })
+        );
+      });
+  };
+};
+
+export const logIn = credentials => {
+  return dispatch => {
+    const url = `${apiUrl}/auth/login`;
+    dispatch(
+      setActionStatus({
+        actionStatus: IN_PROGRESS_MESSAGE,
+        actionName: 'logIn'
+      })
+    );
+    return axios({
+      url,
+      data: credentials,
+      method: 'post'
+    })
+      .then(res => {
+        const user = res.data;
+        const token = res.headers['x-auth'];
+
+        localStorage.setItem('auth-token', token);
+
+        dispatch(
+          setActionStatus({
+            actionStatus: SUCCESS_MESSAGE,
+            actionName: 'logIn'
+          })
+        );
+        dispatch(setUserDetails(user));
+        dispatch(setToken(token));
+      })
+      .catch(err => {
+        dispatch(
+          setError({
+            errorType: AUTHENTICATION_ERROR,
+            errorMessage: INVALID_CREDENTIALS
+          })
+        );
+        dispatch(
+          setActionStatus({
+            actionStatus: FAILED_MESSAGE,
+            actionName: 'logIn'
           })
         );
       });

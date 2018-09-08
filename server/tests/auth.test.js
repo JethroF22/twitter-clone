@@ -94,7 +94,7 @@ describe('/auth', () => {
         .end(done);
     });
 
-    it('should return an error message if password does not match', done => {
+    it('should return an error message for bad requests', done => {
       user = {
         email: users[0].email,
         password: 'notmyrealpassword'
@@ -105,23 +105,7 @@ describe('/auth', () => {
         .send(user)
         .expect(400)
         .expect(res => {
-          expect(res.body.msg).to.equal('Password does not match');
-        })
-        .end(done);
-    });
-
-    it('should return an error message if the user does not exist', done => {
-      user = {
-        email: 'TinyTina@gmail.com',
-        password: 'iamtinytina'
-      };
-
-      request(app)
-        .post('/auth/login')
-        .send(user)
-        .expect(400)
-        .expect(res => {
-          expect(res.body.msg).to.equal('User not found');
+          expect(res.body.msg).to.equal('Invalid email/password combination');
         })
         .end(done);
     });

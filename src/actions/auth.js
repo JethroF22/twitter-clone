@@ -33,7 +33,7 @@ export const registerUser = credentials => {
     const url = `${apiUrl}/auth/register`;
     dispatch(
       setActionStatus({
-        status: IN_PROGRESS_MESSAGE,
+        actionStatus: IN_PROGRESS_MESSAGE,
         actionName: 'registerUser'
       })
     );
@@ -46,7 +46,7 @@ export const registerUser = credentials => {
 
         dispatch(
           setActionStatus({
-            status: SUCCESS_MESSAGE,
+            actionStatus: SUCCESS_MESSAGE,
             actionName: 'registerUser'
           })
         );
@@ -75,7 +75,7 @@ export const registerUser = credentials => {
         }
         dispatch(
           setActionStatus({
-            status: FAILED_MESSAGE,
+            actionStatus: FAILED_MESSAGE,
             actionName: 'registerUser'
           })
         );

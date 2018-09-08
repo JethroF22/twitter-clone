@@ -6,7 +6,7 @@ const { SUCCESS_MESSAGE } = actionStatusMessages;
 
 let actionObject = {
   actionName: 'action',
-  status: SUCCESS_MESSAGE
+  actionStatus: SUCCESS_MESSAGE
 };
 
 test('should create the action object', () => {

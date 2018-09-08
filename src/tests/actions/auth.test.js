@@ -57,12 +57,12 @@ describe('auth actions', () => {
             const actions = store.getActions();
             expect(actions[0]).toEqual({
               type: SET_ACTION_STATUS,
-              status: IN_PROGRESS_MESSAGE,
+              actionStatus: IN_PROGRESS_MESSAGE,
               actionName: 'registerUser'
             });
             expect(actions[1]).toEqual({
               type: SET_ACTION_STATUS,
-              status: SUCCESS_MESSAGE,
+              actionStatus: SUCCESS_MESSAGE,
               actionName: 'registerUser'
             });
             expect(actions[2]).toEqual({
@@ -92,7 +92,7 @@ describe('auth actions', () => {
             const actions = store.getActions();
             expect(actions[0]).toEqual({
               type: SET_ACTION_STATUS,
-              status: IN_PROGRESS_MESSAGE,
+              actionStatus: IN_PROGRESS_MESSAGE,
               actionName: 'registerUser'
             });
             expect(actions[1]).toEqual({
@@ -102,7 +102,7 @@ describe('auth actions', () => {
             });
             expect(actions[2]).toEqual({
               type: SET_ACTION_STATUS,
-              status: FAILED_MESSAGE,
+              actionStatus: FAILED_MESSAGE,
               actionName: 'registerUser'
             });
             done();

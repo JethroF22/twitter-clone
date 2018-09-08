@@ -11,7 +11,7 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  username: {
+  name: {
     type: String,
     required: true,
     minlength: 6
@@ -62,8 +62,8 @@ const UserSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         required: true
       },
-      username: {
-        username: {
+      user: {
+        name: {
           type: String,
           required: true,
           minLength: 6
@@ -89,8 +89,8 @@ const UserSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         required: true
       },
-      username: {
-        username: {
+      user: {
+        name: {
           type: String,
           required: true,
           minLength: 6
@@ -170,7 +170,7 @@ UserSchema.methods.toJSON = function() {
   const userObj = user.toObject();
 
   return _.pick(userObj, [
-    'username',
+    'name',
     'handle',
     'bio',
     'photo',

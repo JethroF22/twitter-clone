@@ -3,7 +3,7 @@ export default (state = {}, action) => {
     case 'SET_USER_DETAILS':
       return {
         ...state,
-        username: action.username,
+        name: action.name,
         handle: action.handle
       };
     case 'SET_TOKEN':

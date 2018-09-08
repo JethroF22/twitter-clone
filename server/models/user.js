@@ -4,6 +4,8 @@ const bcrypt = require('bcryptjs');
 const _ = require('lodash');
 const jwt = require('jsonwebtoken');
 
+const { containsSpaces } = require('../utils/regex');
+
 const UserSchema = new mongoose.Schema({
   token: {
     type: String,
@@ -17,7 +19,12 @@ const UserSchema = new mongoose.Schema({
   handle: {
     type: String,
     required: true,
-    minlength: 6
+    minlength: 6,
+    unique: true,
+    validate: {
+      validator: containsSpaces,
+      message: 'Handles cannot contain any spaces'
+    }
   },
   email: {
     type: String,

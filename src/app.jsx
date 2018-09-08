@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 
 import configureStore from './store/configureStore';
-import LandingPage from './components/LandingPage';
+import AppRouter from './router/AppRouter';
 
 const appRoot = document.getElementById('app');
 
@@ -11,7 +11,7 @@ const store = configureStore();
 
 const root = (
   <Provider store={store}>
-    <LandingPage />
+    <AppRouter />
   </Provider>
 );
 

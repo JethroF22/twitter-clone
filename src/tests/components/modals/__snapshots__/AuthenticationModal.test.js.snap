@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AuthenticationModal should render correctly 1`] = `
+<Modal
+  ariaHideApp={true}
+  bodyOpenClassName="ReactModal__Body--open"
+  closeTimeoutMS={200}
+  contentLabel="Sign Up"
+  isOpen={true}
+  onRequestClose={[MockFunction]}
+  parentSelector={[Function]}
+  portalClassName="ReactModalPortal"
+  shouldCloseOnEsc={true}
+  shouldCloseOnOverlayClick={true}
+  shouldFocusAfterRender={true}
+  shouldReturnFocusAfterClose={true}
+>
+  <button
+    name="closeModal"
+    onClick={[MockFunction]}
+  >
+    ×
+  </button>
+  <Connect(RegistrationForm) />
+</Modal>
+`;

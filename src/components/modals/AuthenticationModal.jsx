@@ -11,7 +11,9 @@ const AuthenticationModal = props => (
     onRequestClose={props.closeModal}
     closeTimeoutMS={200}
   >
-    <button onClick={props.closeModal}>&times;</button>
+    <button onClick={props.closeModal} name="closeModal">
+      &times;
+    </button>
     {props.modalContent === 'Sign Up' ? <RegistrationForm /> : <LogInForm />}
   </Modal>
 );

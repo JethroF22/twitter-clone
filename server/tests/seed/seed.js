@@ -38,4 +38,21 @@ const populateUsers = done => {
     .catch(err => console.log(err));
 };
 
-module.exports = { populateUsers, users };
+const tweets = [
+  {
+    body: 'This is a test',
+    user: {
+      name: users[0].name,
+      _id: users[0].id
+    }
+  },
+  {
+    body: 'Tres tristes tigres tragaban trigo en tres tristes trastos',
+    user: {
+      name: users[1].name,
+      _id: users[1].id
+    }
+  }
+];
+
+module.exports = { populateUsers, users, tweets };

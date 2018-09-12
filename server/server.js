@@ -14,6 +14,7 @@ const path = require('path');
 
 const mongoose = require('./db/mongoose');
 const authRoutes = require('./routes/auth');
+const tweetRoutes = require('./routes/tweet');
 
 const app = express();
 const publicPath = path.join(__dirname, '..', 'public');
@@ -27,6 +28,7 @@ app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(express.static(publicPath));
 app.use('/auth', authRoutes);
+app.use('/tweet', tweetRoutes);
 
 app.listen(port, () => {
   console.log(`Server is live on port ${port}`);

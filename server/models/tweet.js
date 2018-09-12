@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
+const _ = require('lodash');
 
 const TweetSchema = new mongoose.Schema({
   body: {
@@ -8,7 +9,7 @@ const TweetSchema = new mongoose.Schema({
     required: true
   },
   user: {
-    username: {
+    name: {
       type: String,
       required: true
     },
@@ -37,6 +38,20 @@ const TweetSchema = new mongoose.Schema({
     }
   }
 });
+
+TweetSchema.methods.toJSON = function() {
+  const tweet = this;
+  const tweetObj = tweet.toObject();
+
+  return _.pick(tweetObj, [
+    'body',
+    'timestamp',
+    'likes',
+    'retweets',
+    'imgUrl',
+    'user'
+  ]);
+};
 
 const Tweet = mongoose.model('Tweet', TweetSchema);
 

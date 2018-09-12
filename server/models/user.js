@@ -214,6 +214,18 @@ UserSchema.statics.findByCredentials = function(
   });
 };
 
+UserSchema.statics.findByToken = function(token) {
+  const User = this;
+
+  return User.findOne({ token }).then(user => {
+    if (!user) {
+      return Promise.reject('User not found');
+    } else {
+      return Promise.resolve(user);
+    }
+  });
+};
+
 const User = mongoose.model('User', UserSchema);
 
 module.exports = User;

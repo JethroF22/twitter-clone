@@ -26,7 +26,12 @@ const users = [
     email: 'nariroh@gmail.com',
     handle: 'iamnari',
     password: 'password2',
-    token: jwt.sign({ id: userTwoID }, process.env.SECRET_KEY)
+    token: jwt.sign({ id: userTwoID }, process.env.SECRET_KEY),
+    retweets: [
+      {
+        _id: tweetOneID
+      }
+    ]
   }
 ];
 

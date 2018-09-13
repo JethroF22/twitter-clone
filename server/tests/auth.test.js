@@ -65,7 +65,12 @@ describe('/auth', () => {
     });
 
     it('should return an error for duplicate emails', done => {
-      user = users[0];
+      user = {
+        name: 'Elijah',
+        handle: 'TheProphet',
+        email: users[0].email,
+        password: 'iamelijah'
+      };
 
       request(app)
         .post('/auth/register')

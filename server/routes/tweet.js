@@ -27,4 +27,39 @@ router.post('/create', authenticate, (req, res) => {
     });
 });
 
+router.patch('/retweet/:id', authenticate, (req, res) => {
+  const user = req.user;
+  const _id = req.params.id;
+
+  const hasBeenRetweeted = user.retweets.find(
+    tweet => tweet._id.toHexString() === _id
+  );
+  if (hasBeenRetweeted) {
+    return res.status(400).send('Cannot retweet the same tweet more than once');
+  }
+
+  Tweet.findOneAndUpdate(
+    { _id },
+    {
+      $inc: {
+        retweets: 1
+      }
+    },
+    { new: true }
+  )
+    .then(tweet => {
+      if (!tweet) {
+        return res.status(404).send('Tweet not found');
+      }
+      user.retweets.push({ _id });
+      user.save().then(user => {
+        res.send(tweet);
+      });
+    })
+    .catch(err => {
+      const errors = DBErrorParser(err);
+      res.status(400).send(errors);
+    });
+});
+
 module.exports = router;

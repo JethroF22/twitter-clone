@@ -4,9 +4,12 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const User = require('../../models/user');
+const Tweet = require('../../models/tweet');
 
 const userOneID = new ObjectID();
 const userTwoID = new ObjectID();
+const tweetOneID = new ObjectID();
+const tweetTwoID = new ObjectID();
 
 const users = [
   {
@@ -40,19 +43,34 @@ const populateUsers = done => {
 
 const tweets = [
   {
+    _id: tweetOneID,
     body: 'This is a test',
     user: {
       name: users[0].name,
-      _id: users[0].id
-    }
+      _id: userOneID
+    },
+    timestamp: new Date()
   },
   {
+    _id: tweetTwoID,
     body: 'Tres tristes tigres tragaban trigo en tres tristes trastos',
     user: {
       name: users[1].name,
-      _id: users[1].id
-    }
+      _id: userTwoID
+    },
+    timestamp: new Date()
   }
 ];
 
-module.exports = { populateUsers, users, tweets };
+const populateTweets = done => {
+  Tweet.remove({})
+    .then(() => {
+      return Tweet.create(tweets);
+    })
+    .then(() => {
+      done();
+    })
+    .catch(err => console.log(err));
+};
+
+module.exports = { populateUsers, users, tweets, populateTweets };

@@ -4,11 +4,62 @@ const { ObjectID } = require('mongodb');
 
 const app = require('../server');
 const Tweet = require('../models/tweet');
-const { tweets, users, populateTweets } = require('./seed/seed');
+const { tweets, users, populateTweets, populateUsers } = require('./seed/seed');
 
 let tweet, id, token, user;
 
 describe('/tweet', () => {
+  describe('GET', () => {
+    beforeEach(function(done) {
+      this.timeout(0);
+      user = users[1];
+      populateTweets(done);
+    });
+
+    beforeEach(function(done) {
+      populateUsers(done);
+    });
+
+    describe('/fetch_tweets/:id', () => {
+      it('should fetch a users tweets', done => {
+        id = user._id;
+
+        request(app)
+          .get(`/tweet/fetch_tweets/${id}`)
+          .expect(200)
+          .expect(res => {
+            expect(res.body.length).to.equal(2);
+          })
+          .end(done);
+      });
+
+      it('should return an error for invalid ids', done => {
+        id = new ObjectID();
+
+        request(app)
+          .get(`/tweet/fetch_tweets/${id}`)
+          .expect(404)
+          .expect(res => {
+            expect(res.error.text).to.equal('User does not exist');
+          })
+          .end(done);
+      });
+
+      it("should return an error if the user hasn't created tweets", done => {
+        user = users[2];
+        id = user._id;
+
+        request(app)
+          .get(`/tweet/fetch_tweets/${id}`)
+          .expect(404)
+          .expect(res => {
+            expect(res.error.text).to.equal('User has not tweeted anything');
+          })
+          .end(done);
+      });
+    });
+  });
+
   describe('POST', () => {
     beforeEach(() => {
       tweet = tweets[1];

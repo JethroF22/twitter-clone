@@ -8,6 +8,7 @@ const Tweet = require('../../models/tweet');
 
 const userOneID = new ObjectID();
 const userTwoID = new ObjectID();
+const userThreeID = new ObjectID();
 const tweetOneID = new ObjectID();
 const tweetTwoID = new ObjectID();
 
@@ -32,6 +33,14 @@ const users = [
         _id: tweetOneID
       }
     ]
+  },
+  {
+    _id: userThreeID,
+    name: 'Alexandra',
+    email: 'alexandra@gmail.com',
+    handle: 'QueenAlexa',
+    password: 'password3',
+    token: jwt.sign({ id: userThreeID }, process.env.SECRET_KEY)
   }
 ];
 

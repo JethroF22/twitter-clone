@@ -147,6 +147,14 @@ const UserSchema = new mongoose.Schema({
         required: true
       }
     }
+  ],
+  likedTweets: [
+    {
+      _id: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true
+      }
+    }
   ]
 });
 
@@ -178,7 +186,8 @@ UserSchema.methods.toJSON = function() {
     'followers',
     'following',
     'messages',
-    'notifications'
+    'notifications',
+    'likedTweets'
   ]);
 };
 

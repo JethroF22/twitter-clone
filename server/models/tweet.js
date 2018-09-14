@@ -49,7 +49,8 @@ TweetSchema.methods.toJSON = function() {
     'likes',
     'retweets',
     'imgUrl',
-    'user'
+    'user',
+    '_id'
   ]);
 };
 

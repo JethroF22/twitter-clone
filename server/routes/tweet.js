@@ -1,5 +1,6 @@
 const express = require('express');
 const _ = require('lodash');
+const { ObjectID } = require('mongodb');
 
 const User = require('../models/user');
 const Tweet = require('../models/tweet');
@@ -81,6 +82,39 @@ router.patch('/retweet/:id', authenticate, (req, res) => {
       user.retweets.push({ _id });
       user.save().then(user => {
         res.send(tweet);
+      });
+    })
+    .catch(err => {
+      const errors = DBErrorParser(err);
+      res.status(400).send(errors);
+    });
+});
+
+// DELETE routes
+router.delete('/delete/:id', authenticate, (req, res) => {
+  const id = req.params.id;
+
+  Tweet.findOneAndRemove({ _id: id, 'user._id': req.user._id })
+    .then(tweet => {
+      if (!tweet) {
+        res.status(404).send('This tweet does not exist');
+      }
+
+      User.updateMany(
+        {
+          retweets: {
+            _id: id
+          }
+        },
+        {
+          $pull: {
+            retweets: {
+              _id: id
+            }
+          }
+        }
+      ).then(users => {
+        res.send();
       });
     })
     .catch(err => {

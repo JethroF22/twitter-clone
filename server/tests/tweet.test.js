@@ -4,6 +4,7 @@ const { ObjectID } = require('mongodb');
 
 const app = require('../server');
 const Tweet = require('../models/tweet');
+const User = require('../models/user');
 const { tweets, users, populateTweets, populateUsers } = require('./seed/seed');
 
 let tweet, id, token, user;
@@ -152,6 +153,63 @@ describe('/tweet', () => {
           .expect(404)
           .expect(res => {
             expect(res.error.text).to.equal('Tweet not found');
+          })
+          .end(done);
+      });
+    });
+  });
+
+  describe('DELETE', () => {
+    beforeEach(function(done) {
+      this.timeout(0);
+      populateTweets(done);
+    });
+
+    describe('/delete/:id', () => {
+      it('should delete a tweet', done => {
+        id = tweets[0]._id;
+        token = users[0].token;
+
+        request(app)
+          .delete(`/tweet/delete/${id}`)
+          .set('x-token', token)
+          .expect(200)
+          .end(err => {
+            if (err) return done(err);
+
+            User.findById(users[1]._id)
+              .then(user => {
+                expect(user.retweets.length).to.equal(0);
+                done();
+              })
+              .catch(err => done(err));
+          });
+      });
+
+      it('should send an error message for non-existent tweets', done => {
+        id = new ObjectID();
+        token = users[0].token;
+
+        request(app)
+          .delete(`/tweet/delete/${id}`)
+          .set('x-token', token)
+          .expect(404)
+          .expect(res => {
+            expect(res.error.text).to.equal('This tweet does not exist');
+          })
+          .end(done);
+      });
+
+      it('should not allow users to delete other users tweets', done => {
+        id = tweets[0]._id;
+        token = users[1].token;
+
+        request(app)
+          .delete(`/tweet/delete/${id}`)
+          .set('x-token', token)
+          .expect(404)
+          .expect(res => {
+            expect(res.error.text).to.equal('This tweet does not exist');
           })
           .end(done);
       });

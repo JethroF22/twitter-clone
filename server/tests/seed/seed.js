@@ -40,7 +40,12 @@ const users = [
     email: 'alexandra@gmail.com',
     handle: 'QueenAlexa',
     password: 'password3',
-    token: jwt.sign({ id: userThreeID }, process.env.SECRET_KEY)
+    token: jwt.sign({ id: userThreeID }, process.env.SECRET_KEY),
+    likedTweets: [
+      {
+        _id: tweetTwoID
+      }
+    ]
   }
 ];
 

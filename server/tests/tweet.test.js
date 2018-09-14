@@ -157,6 +157,70 @@ describe('/tweet', () => {
           .end(done);
       });
     });
+
+    describe('/like/:id', () => {
+      beforeEach(() => {
+        tweet = tweets[0];
+        id = tweet._id;
+        user = users[1];
+        token = user.token;
+      });
+
+      it('should like a tweet', done => {
+        request(app)
+          .patch(`/tweet/like/${id}`)
+          .set('x-token', token)
+          .expect(200)
+          .expect(res => {
+            expect(res.body.tweet.likes).to.equal(1);
+            expect(res.body.user.likedTweets[0]).to.deep.equal({
+              _id: id.toHexString()
+            });
+          })
+          .end(done);
+      });
+
+      it('should stop users from liking their own tweets', done => {
+        user = users[0];
+        token = user.token;
+
+        request(app)
+          .patch(`/tweet/like/${id}`)
+          .set('x-token', token)
+          .expect(404)
+          .end(done);
+      });
+
+      it('should send an error message for non-existent tweets', done => {
+        id = new ObjectID();
+
+        request(app)
+          .patch(`/tweet/like/${id}`)
+          .set('x-token', token)
+          .expect(404)
+          .expect(res => {
+            expect(res.error.text).to.equal('Tweet does not exist');
+          })
+          .end(done);
+      });
+
+      it('should stop users from liking the same tweet twice', done => {
+        user = users[2];
+        token = user.token;
+        id = tweets[1]._id;
+
+        request(app)
+          .patch(`/tweet/like/${id}`)
+          .set('x-token', token)
+          .expect(400)
+          .expect(res => {
+            expect(res.error.text).to.equal(
+              'User has already liked this tweet'
+            );
+          })
+          .end(done);
+      });
+    });
   });
 
   describe('DELETE', () => {

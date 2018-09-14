@@ -90,6 +90,42 @@ router.patch('/retweet/:id', authenticate, (req, res) => {
     });
 });
 
+router.patch('/like/:id', authenticate, (req, res) => {
+  const id = req.params.id;
+  const user = req.user;
+
+  const hasBeenLiked = user.likedTweets.find(
+    tweet => tweet._id.toHexString() === id
+  );
+  if (hasBeenLiked) {
+    return res.status(400).send('User has already liked this tweet');
+  }
+
+  Tweet.findOneAndUpdate(
+    { _id: id, 'user._id': { $ne: user._id } },
+    { $inc: { likes: 1 } },
+    { new: true }
+  ).then(tweet => {
+    if (!tweet) {
+      return res.status(404).send('Tweet does not exist');
+    }
+
+    user.likedTweets.push({ _id: id });
+    user
+      .save()
+      .then(user => {
+        res.send({
+          user,
+          tweet
+        });
+      })
+      .catch(err => {
+        const errors = DBErrorParser(err);
+        res.status(400).send(errors);
+      });
+  });
+});
+
 // DELETE routes
 router.delete('/delete/:id', authenticate, (req, res) => {
   const id = req.params.id;

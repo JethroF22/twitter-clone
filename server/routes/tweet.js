@@ -133,7 +133,7 @@ router.delete('/delete/:id', authenticate, (req, res) => {
   Tweet.findOneAndRemove({ _id: id, 'user._id': req.user._id })
     .then(tweet => {
       if (!tweet) {
-        res.status(404).send('This tweet does not exist');
+        return res.status(404).send('This tweet does not exist');
       }
 
       User.updateMany(
@@ -150,7 +150,7 @@ router.delete('/delete/:id', authenticate, (req, res) => {
           }
         }
       ).then(users => {
-        res.send();
+        res.send(tweet);
       });
     })
     .catch(err => {

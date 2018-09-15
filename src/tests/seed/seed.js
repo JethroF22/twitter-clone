@@ -1,3 +1,7 @@
+import { ObjectID } from 'mongodb';
+
+export const userID = new ObjectID();
+
 export const users = [
   {
     name: 'Jethro Fredericks',
@@ -21,9 +25,15 @@ export const users = [
 
 export const tweets = [
   {
-    body: 'This is a test'
+    body: 'This is a test',
+    user: {
+      _id: userID
+    }
   },
   {
-    body: 'Peter Piper picked a peck of pickled peppers'
+    body: 'Peter Piper picked a peck of pickled peppers',
+    user: {
+      _id: userID
+    }
   }
 ];

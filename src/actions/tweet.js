@@ -9,18 +9,25 @@ import {
   actionTypes
 } from '../config/const.json';
 
-const { UPDATE_USER_TWEETS } = actionTypes.tweet;
+const { UPDATE_USER_TWEETS, SET_USER_TWEETS } = actionTypes.tweet;
 const {
   IN_PROGRESS_MESSAGE,
   SUCCESS_MESSAGE,
   FAILED_MESSAGE
 } = actionStatusMessages;
-const { UNKNOWN_ERROR, INVALID_TOKEN, TWEET_NOT_FOUND } = errorMessages;
+const {
+  UNKNOWN_ERROR,
+  INVALID_TOKEN,
+  TWEET_NOT_FOUND,
+  NON_EXISTENT_USER
+} = errorMessages;
 const { DB_ERROR, AUTHORISATION_ERROR, INVALID_ID } = errorTypes;
 
 const apiUrl = process.env.API_URL || '';
 
 export const updateUserTweets = tweet => ({ type: UPDATE_USER_TWEETS, tweet });
+
+export const setUserTweets = tweets => ({ type: SET_USER_TWEETS, tweets });
 
 export const createTweet = (tweet, token) => {
   return dispatch => {
@@ -115,6 +122,53 @@ export const retweet = (id, token) => {
             setError({
               errorType: INVALID_ID,
               errorMessage: TWEET_NOT_FOUND
+            })
+          );
+        } else {
+          dispatch(
+            setError({
+              errorType: DB_ERROR,
+              errorMessage: UNKNOWN_ERROR
+            })
+          );
+        }
+      });
+  };
+};
+
+export const fetchTweets = id => {
+  return dispatch => {
+    const url = `${apiUrl}/tweet/fetch_tweets/${id}`;
+    dispatch(
+      setActionStatus({
+        actionStatus: IN_PROGRESS_MESSAGE,
+        actionName: 'fetchTweets'
+      })
+    );
+    return axios({ url, method: 'get' })
+      .then(res => {
+        dispatch(
+          setActionStatus({
+            actionStatus: SUCCESS_MESSAGE,
+            actionName: 'fetchTweets'
+          })
+        );
+
+        const tweets = res.data;
+        dispatch(setUserTweets(tweets));
+      })
+      .catch(err => {
+        dispatch(
+          setActionStatus({
+            actionStatus: FAILED_MESSAGE,
+            actionName: 'fetchTweets'
+          })
+        );
+        if (err.response.data && err.response.data == NON_EXISTENT_USER) {
+          dispatch(
+            setError({
+              errorType: INVALID_ID,
+              errorMessage: NON_EXISTENT_USER
             })
           );
         } else {

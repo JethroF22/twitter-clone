@@ -2,9 +2,9 @@ import tweetReducer from '../../reducers/tweet';
 
 import { actionTypes } from '../../config/const.json';
 import { tweets } from '../seed/seed';
-const { UPDATE_USER_TWEETS } = actionTypes.tweet;
+const { UPDATE_USER_TWEETS, SET_USER_TWEETS } = actionTypes.tweet;
 
-test("should set update the user's tweets", () => {
+test("should update the user's tweets", () => {
   const tweet = tweets[0];
   const state = tweetReducer(
     { tweets: [] },
@@ -12,5 +12,12 @@ test("should set update the user's tweets", () => {
   );
   expect(state).toEqual({
     tweets: [tweet]
+  });
+});
+
+test("should set the user's tweets", () => {
+  const state = tweetReducer({ tweets: [] }, { type: SET_USER_TWEETS, tweets });
+  expect(state).toEqual({
+    tweets
   });
 });

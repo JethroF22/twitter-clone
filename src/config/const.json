@@ -22,7 +22,8 @@
   "errorTypes": {
     "DB_ERROR": "DB Error",
     "AUTHENTICATION_ERROR": "Authentication Error",
-    "AUTHORISATION_ERROR": "Authorisation Error"
+    "AUTHORISATION_ERROR": "Authorisation Error",
+    "INVALID_ID": "Invalid ID"
   },
   "errorMessages": {
     "VALIDATION_ERROR": "Validation Error",
@@ -30,6 +31,7 @@
     "DUPLICATE_HANDLE": "Duplicate handle",
     "UNKNOWN_ERROR": "Unknown DB error",
     "INVALID_CREDENTIALS": "Invalid email/password combination",
-    "INVALID_TOKEN": "The authentication token is invalid"
+    "INVALID_TOKEN": "The authentication token is invalid",
+    "TWEET_NOT_FOUND": "Tweet not found"
   }
 }

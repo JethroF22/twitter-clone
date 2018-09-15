@@ -1,4 +1,4 @@
-export default [
+export const users = [
   {
     name: 'Jethro Fredericks',
     password: 'iamjethro',
@@ -16,5 +16,14 @@ export default [
     password: 'iamjustin',
     handle: 'TheIndian',
     email: 'justin@gmail.com'
+  }
+];
+
+export const tweets = [
+  {
+    body: 'This is a test'
+  },
+  {
+    body: 'Peter Piper picked a peck of pickled peppers'
   }
 ];

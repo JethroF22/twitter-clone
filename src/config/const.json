@@ -14,17 +14,22 @@
     },
     "error": {
       "SET_ERROR_MESSAGE": "SET_ERROR_MESSAGE"
+    },
+    "tweet": {
+      "UPDATE_USER_TWEETS": "UPDATE_USER_TWEETS"
     }
   },
   "errorTypes": {
     "DB_ERROR": "DB Error",
-    "AUTHENTICATION_ERROR": "Authentication Error"
+    "AUTHENTICATION_ERROR": "Authentication Error",
+    "AUTHORISATION_ERROR": "Authorisation Error"
   },
   "errorMessages": {
     "VALIDATION_ERROR": "Validation Error",
     "DUPLICATE_EMAIL": "Duplicate email",
     "DUPLICATE_HANDLE": "Duplicate handle",
     "UNKNOWN_ERROR": "Unknown DB error",
-    "INVALID_CREDENTIALS": "Invalid email/password combination"
+    "INVALID_CREDENTIALS": "Invalid email/password combination",
+    "INVALID_TOKEN": "The authentication token is invalid"
   }
 }

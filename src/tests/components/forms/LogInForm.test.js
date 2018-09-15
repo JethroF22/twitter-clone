@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 import _ from 'lodash';
 
 import { LogInForm } from '../../../components/forms/LogInForm';
-import users from '../../seed/seed';
+import { users } from '../../seed/seed';
 
 let wrapper, state, logInSpy, user;
 

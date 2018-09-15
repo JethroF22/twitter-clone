@@ -8,7 +8,7 @@ import {
   setToken,
   logIn
 } from '../../actions/auth';
-import users from '../seed/seed';
+import { users } from '../seed/seed';
 import {
   actionTypes,
   actionStatusMessages,

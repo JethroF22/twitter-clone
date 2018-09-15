@@ -4,7 +4,7 @@ import _ from 'lodash';
 
 import { RegistrationForm } from '../../../components/forms/RegistrationForm';
 
-import users from '../../seed/seed';
+import { users } from '../../seed/seed';
 
 let wrapper, name, registerUserSpy, user, state;
 

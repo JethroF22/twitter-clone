@@ -15,8 +15,8 @@ const {
   SUCCESS_MESSAGE,
   FAILED_MESSAGE
 } = actionStatusMessages;
-const { UNKNOWN_ERROR, INVALID_TOKEN } = errorMessages;
-const { DB_ERROR, AUTHORISATION_ERROR } = errorTypes;
+const { UNKNOWN_ERROR, INVALID_TOKEN, TWEET_NOT_FOUND } = errorMessages;
+const { DB_ERROR, AUTHORISATION_ERROR, INVALID_ID } = errorTypes;
 
 const apiUrl = process.env.API_URL || '';
 
@@ -62,6 +62,59 @@ export const createTweet = (tweet, token) => {
             setError({
               errorType: AUTHORISATION_ERROR,
               errorMessage: INVALID_TOKEN
+            })
+          );
+        } else {
+          dispatch(
+            setError({
+              errorType: DB_ERROR,
+              errorMessage: UNKNOWN_ERROR
+            })
+          );
+        }
+      });
+  };
+};
+
+export const retweet = (id, token) => {
+  return dispatch => {
+    const url = `${apiUrl}/tweet/retweet/${id}`;
+    dispatch(
+      setActionStatus({
+        actionStatus: IN_PROGRESS_MESSAGE,
+        actionName: 'retweet'
+      })
+    );
+    return axios({
+      url,
+      method: 'patch',
+      headers: {
+        'x-token': token
+      }
+    })
+      .then(res => {
+        dispatch(
+          setActionStatus({
+            actionStatus: SUCCESS_MESSAGE,
+            actionName: 'retweet'
+          })
+        );
+
+        const tweet = res.data;
+        dispatch(updateUserTweets(tweet));
+      })
+      .catch(err => {
+        dispatch(
+          setActionStatus({
+            actionStatus: FAILED_MESSAGE,
+            actionName: 'retweet'
+          })
+        );
+        if (err.response.data == TWEET_NOT_FOUND) {
+          dispatch(
+            setError({
+              errorType: INVALID_ID,
+              errorMessage: TWEET_NOT_FOUND
             })
           );
         } else {

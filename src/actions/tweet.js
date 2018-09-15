@@ -182,3 +182,69 @@ export const fetchTweets = id => {
       });
   };
 };
+
+export const deleteTweet = (id, token) => {
+  return (dispatch, getState) => {
+    const url = `${apiUrl}/tweet/delete/${id}`;
+    dispatch(
+      setActionStatus({
+        actionStatus: IN_PROGRESS_MESSAGE,
+        actionName: 'deleteTweet'
+      })
+    );
+    return axios({
+      method: 'delete',
+      url,
+      headers: {
+        'x-token': token
+      }
+    })
+      .then(res => {
+        const deletedTweet = res.data;
+        let tweets = getState().tweet.tweets;
+
+        tweets = tweets.filter(tweet => tweet._id !== deletedTweet._id);
+
+        dispatch(
+          setActionStatus({
+            actionStatus: SUCCESS_MESSAGE,
+            actionName: 'deleteTweet'
+          })
+        );
+
+        dispatch(setUserTweets(tweets));
+      })
+      .catch(err => {
+        dispatch(
+          setActionStatus({
+            actionStatus: FAILED_MESSAGE,
+            actionName: 'deleteTweet'
+          })
+        );
+        if (err.response) {
+          if (err.response.statusText == 'Unauthorised') {
+            dispatch(
+              setError({
+                errorType: AUTHORISATION_ERROR,
+                errorMessage: INVALID_TOKEN
+              })
+            );
+          } else if (err.response.data == TWEET_NOT_FOUND) {
+            dispatch(
+              setError({
+                errorType: INVALID_ID,
+                errorMessage: TWEET_NOT_FOUND
+              })
+            );
+          }
+        } else {
+          dispatch(
+            setError({
+              errorType: DB_ERROR,
+              errorMessage: UNKNOWN_ERROR
+            })
+          );
+        }
+      });
+  };
+};

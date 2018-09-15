@@ -16,7 +16,8 @@
       "SET_ERROR_MESSAGE": "SET_ERROR_MESSAGE"
     },
     "tweet": {
-      "UPDATE_USER_TWEETS": "UPDATE_USER_TWEETS"
+      "UPDATE_USER_TWEETS": "UPDATE_USER_TWEETS",
+      "SET_USER_TWEETS": "SET_USER_TWEETS"
     }
   },
   "errorTypes": {
@@ -32,6 +33,7 @@
     "UNKNOWN_ERROR": "Unknown DB error",
     "INVALID_CREDENTIALS": "Invalid email/password combination",
     "INVALID_TOKEN": "The authentication token is invalid",
-    "TWEET_NOT_FOUND": "Tweet not found"
+    "TWEET_NOT_FOUND": "Tweet not found",
+    "NON_EXISTENT_USER": "User does not exist"
   }
 }

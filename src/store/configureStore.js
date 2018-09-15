@@ -4,6 +4,7 @@ import thunk from 'redux-thunk';
 import authReducer from '../reducers/auth';
 import statusReducer from '../reducers/status';
 import errorReducer from '../reducers/error';
+import tweetReducer from '../reducers/tweet';
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
@@ -12,7 +13,8 @@ export default () => {
     combineReducers({
       auth: authReducer,
       status: statusReducer,
-      error: errorReducer
+      error: errorReducer,
+      tweet: tweetReducer
     }),
     composeEnhancers(applyMiddleware(thunk))
   );

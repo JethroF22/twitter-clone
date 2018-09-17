@@ -8,7 +8,8 @@ import {
   retweet,
   setUserTweets,
   fetchTweets,
-  deleteTweet
+  deleteTweet,
+  likeTweet
 } from '../../actions/tweet';
 import {
   actionTypes,
@@ -26,8 +27,13 @@ const {
   FAILED_MESSAGE
 } = actionStatusMessages;
 const { UPDATE_USER_TWEETS, SET_USER_TWEETS } = actionTypes.tweet;
-const { INVALID_TOKEN, TWEET_NOT_FOUND, NON_EXISTENT_USER } = errorMessages;
-const { AUTHORISATION_ERROR, INVALID_ID } = errorTypes;
+const {
+  INVALID_TOKEN,
+  TWEET_NOT_FOUND,
+  NON_EXISTENT_USER,
+  HAS_BEEN_LIKED
+} = errorMessages;
+const { AUTHORISATION_ERROR, INVALID_REQUEST } = errorTypes;
 
 const createMockStore = configureMockStore([thunk]);
 let store, tweet, token;
@@ -176,7 +182,7 @@ describe('tweet actions', () => {
             expect(actions[2]).toEqual({
               type: SET_ERROR_MESSAGE,
               errorMessage: TWEET_NOT_FOUND,
-              errorType: INVALID_ID
+              errorType: INVALID_REQUEST
             });
             done();
           });
@@ -235,7 +241,7 @@ describe('tweet actions', () => {
             expect(actions[2]).toEqual({
               type: SET_ERROR_MESSAGE,
               errorMessage: NON_EXISTENT_USER,
-              errorType: INVALID_ID
+              errorType: INVALID_REQUEST
             });
             done();
           });
@@ -297,7 +303,7 @@ describe('tweet actions', () => {
             expect(actions[2]).toEqual({
               type: SET_ERROR_MESSAGE,
               errorMessage: TWEET_NOT_FOUND,
-              errorType: INVALID_ID
+              errorType: INVALID_REQUEST
             });
             done();
           });
@@ -328,6 +334,124 @@ describe('tweet actions', () => {
               type: SET_ERROR_MESSAGE,
               errorMessage: INVALID_TOKEN,
               errorType: AUTHORISATION_ERROR
+            });
+            done();
+          });
+      });
+    });
+  });
+
+  describe('likeTweet', () => {
+    test('should handle successful requests', done => {
+      store.dispatch(likeTweet(tweetID, token));
+      let actions = store.getActions();
+      expect(actions[0]).toEqual({
+        type: SET_ACTION_STATUS,
+        actionStatus: IN_PROGRESS_MESSAGE,
+        actionName: 'likeTweet'
+      });
+
+      moxios.wait(() => {
+        const request = moxios.requests.mostRecent();
+        request.respondWith({ status: 200 }).then(() => {
+          actions = store.getActions();
+          expect(actions[1]).toEqual({
+            type: SET_ACTION_STATUS,
+            actionStatus: SUCCESS_MESSAGE,
+            actionName: 'likeTweet'
+          });
+          done();
+        });
+      });
+    });
+
+    test('should handle requests with invalid ids', done => {
+      store.dispatch(likeTweet('1234567890', token));
+      let actions = store.getActions();
+      expect(actions[0]).toEqual({
+        type: SET_ACTION_STATUS,
+        actionStatus: IN_PROGRESS_MESSAGE,
+        actionName: 'likeTweet'
+      });
+
+      moxios.wait(() => {
+        const request = moxios.requests.mostRecent();
+        request
+          .respondWith({ status: 404, response: TWEET_NOT_FOUND })
+          .then(() => {
+            actions = store.getActions();
+            expect(actions[1]).toEqual({
+              type: SET_ACTION_STATUS,
+              actionStatus: FAILED_MESSAGE,
+              actionName: 'likeTweet'
+            });
+            expect(actions[2]).toEqual({
+              type: SET_ERROR_MESSAGE,
+              errorMessage: TWEET_NOT_FOUND,
+              errorType: INVALID_REQUEST
+            });
+            done();
+          });
+      });
+    });
+
+    test('should handle unauthorised requests', done => {
+      store.dispatch(likeTweet(tweetID));
+      let actions = store.getActions();
+      expect(actions[0]).toEqual({
+        type: SET_ACTION_STATUS,
+        actionStatus: IN_PROGRESS_MESSAGE,
+        actionName: 'likeTweet'
+      });
+
+      moxios.wait(() => {
+        const request = moxios.requests.mostRecent();
+        request
+          .respondWith({ status: 401, statusText: 'Unauthorised' })
+          .then(() => {
+            actions = store.getActions();
+            expect(actions[1]).toEqual({
+              type: SET_ACTION_STATUS,
+              actionStatus: FAILED_MESSAGE,
+              actionName: 'likeTweet'
+            });
+            expect(actions[2]).toEqual({
+              type: SET_ERROR_MESSAGE,
+              errorMessage: INVALID_TOKEN,
+              errorType: AUTHORISATION_ERROR
+            });
+            done();
+          });
+      });
+    });
+
+    test('should handle requests for already-liked tweets ', done => {
+      store.dispatch(likeTweet(tweetID));
+      let actions = store.getActions();
+      expect(actions[0]).toEqual({
+        type: SET_ACTION_STATUS,
+        actionStatus: IN_PROGRESS_MESSAGE,
+        actionName: 'likeTweet'
+      });
+
+      moxios.wait(() => {
+        const request = moxios.requests.mostRecent();
+        request
+          .respondWith({
+            status: 400,
+            response: HAS_BEEN_LIKED
+          })
+          .then(() => {
+            actions = store.getActions();
+            expect(actions[1]).toEqual({
+              type: SET_ACTION_STATUS,
+              actionStatus: FAILED_MESSAGE,
+              actionName: 'likeTweet'
+            });
+            expect(actions[2]).toEqual({
+              type: SET_ERROR_MESSAGE,
+              errorMessage: HAS_BEEN_LIKED,
+              errorType: INVALID_REQUEST
             });
             done();
           });

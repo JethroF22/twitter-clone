@@ -19,9 +19,10 @@ const {
   UNKNOWN_ERROR,
   INVALID_TOKEN,
   TWEET_NOT_FOUND,
-  NON_EXISTENT_USER
+  NON_EXISTENT_USER,
+  HAS_BEEN_LIKED
 } = errorMessages;
-const { DB_ERROR, AUTHORISATION_ERROR, INVALID_ID } = errorTypes;
+const { DB_ERROR, AUTHORISATION_ERROR, INVALID_REQUEST } = errorTypes;
 
 const apiUrl = process.env.API_URL || '';
 
@@ -120,7 +121,7 @@ export const retweet = (id, token) => {
         if (err.response.data == TWEET_NOT_FOUND) {
           dispatch(
             setError({
-              errorType: INVALID_ID,
+              errorType: INVALID_REQUEST,
               errorMessage: TWEET_NOT_FOUND
             })
           );
@@ -167,7 +168,7 @@ export const fetchTweets = id => {
         if (err.response.data && err.response.data == NON_EXISTENT_USER) {
           dispatch(
             setError({
-              errorType: INVALID_ID,
+              errorType: INVALID_REQUEST,
               errorMessage: NON_EXISTENT_USER
             })
           );
@@ -232,8 +233,74 @@ export const deleteTweet = (id, token) => {
           } else if (err.response.data == TWEET_NOT_FOUND) {
             dispatch(
               setError({
-                errorType: INVALID_ID,
+                errorType: INVALID_REQUEST,
                 errorMessage: TWEET_NOT_FOUND
+              })
+            );
+          }
+        } else {
+          dispatch(
+            setError({
+              errorType: DB_ERROR,
+              errorMessage: UNKNOWN_ERROR
+            })
+          );
+        }
+      });
+  };
+};
+
+export const likeTweet = (id, token) => {
+  return dispatch => {
+    const url = `${apiUrl}/tweet/like/${id}`;
+    dispatch(
+      setActionStatus({
+        actionStatus: IN_PROGRESS_MESSAGE,
+        actionName: 'likeTweet'
+      })
+    );
+    return axios({
+      method: 'patch',
+      url,
+      headers: {
+        'x-token': token
+      }
+    })
+      .then(res => {
+        dispatch(
+          setActionStatus({
+            actionStatus: SUCCESS_MESSAGE,
+            actionName: 'likeTweet'
+          })
+        );
+      })
+      .catch(err => {
+        dispatch(
+          setActionStatus({
+            actionStatus: FAILED_MESSAGE,
+            actionName: 'likeTweet'
+          })
+        );
+        if (err.response) {
+          if (err.response.statusText == 'Unauthorised') {
+            dispatch(
+              setError({
+                errorType: AUTHORISATION_ERROR,
+                errorMessage: INVALID_TOKEN
+              })
+            );
+          } else if (err.response.data == TWEET_NOT_FOUND) {
+            dispatch(
+              setError({
+                errorType: INVALID_REQUEST,
+                errorMessage: TWEET_NOT_FOUND
+              })
+            );
+          } else if (err.response.data == HAS_BEEN_LIKED) {
+            dispatch(
+              setError({
+                errorType: INVALID_REQUEST,
+                errorMessage: HAS_BEEN_LIKED
               })
             );
           }

@@ -221,6 +221,54 @@ describe('/tweet', () => {
           .end(done);
       });
     });
+
+    describe('/unlike/:id', () => {
+      beforeEach(() => {
+        tweet = tweets[1];
+        id = tweet._id;
+        user = users[2];
+        token = user.token;
+      });
+
+      it('should unlike a tweet', done => {
+        request(app)
+          .patch(`/tweet/unlike/${id}`)
+          .set('x-token', token)
+          .expect(200)
+          .expect(res => {
+            expect(res.body.likedTweets.length).to.equal(0);
+          })
+          .end(done);
+      });
+
+      it('should send an error message for non-existent tweets', done => {
+        id = new ObjectID();
+
+        request(app)
+          .patch(`/tweet/like/${id}`)
+          .set('x-token', token)
+          .expect(404)
+          .expect(res => {
+            expect(res.error.text).to.equal('Tweet does not exist');
+          })
+          .end(done);
+      });
+
+      it("should stop users unliking tweets they haven't already liked", done => {
+        user = users[0];
+        token = user.token;
+        id = tweets[1]._id;
+
+        request(app)
+          .patch(`/tweet/unlike/${id}`)
+          .set('x-token', token)
+          .expect(400)
+          .expect(res => {
+            expect(res.error.text).to.equal('User has yet to like this tweet');
+          })
+          .end(done);
+      });
+    });
   });
 
   describe('DELETE', () => {

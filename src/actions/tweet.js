@@ -17,7 +17,7 @@ const {
 } = actionStatusMessages;
 const {
   UNKNOWN_ERROR,
-  INVALID_TOKEN,
+  UNAUTHORISED,
   TWEET_NOT_FOUND,
   NON_EXISTENT_USER,
   HAS_BEEN_LIKED,
@@ -66,11 +66,11 @@ export const createTweet = (tweet, token) => {
             actionName: 'createTweet'
           })
         );
-        if (err.response.statusText == 'Unauthorised') {
+        if (err.response.statusText == UNAUTHORISED) {
           dispatch(
             setError({
               errorType: AUTHORISATION_ERROR,
-              errorMessage: INVALID_TOKEN
+              errorMessage: UNAUTHORISED
             })
           );
         } else {
@@ -119,13 +119,22 @@ export const retweet = (id, token) => {
             actionName: 'retweet'
           })
         );
-        if (err.response.data == TWEET_NOT_FOUND) {
-          dispatch(
-            setError({
-              errorType: INVALID_REQUEST,
-              errorMessage: TWEET_NOT_FOUND
-            })
-          );
+        if (err.response) {
+          if (err.response.data == TWEET_NOT_FOUND) {
+            dispatch(
+              setError({
+                errorType: INVALID_REQUEST,
+                errorMessage: TWEET_NOT_FOUND
+              })
+            );
+          } else if (err.response.statusText == UNAUTHORISED) {
+            dispatch(
+              setError({
+                errorType: AUTHORISATION_ERROR,
+                errorMessage: UNAUTHORISED
+              })
+            );
+          }
         } else {
           dispatch(
             setError({
@@ -224,11 +233,11 @@ export const deleteTweet = (id, token) => {
           })
         );
         if (err.response) {
-          if (err.response.statusText == 'Unauthorised') {
+          if (err.response.statusText == UNAUTHORISED) {
             dispatch(
               setError({
                 errorType: AUTHORISATION_ERROR,
-                errorMessage: INVALID_TOKEN
+                errorMessage: UNAUTHORISED
               })
             );
           } else if (err.response.data == TWEET_NOT_FOUND) {
@@ -283,11 +292,11 @@ export const likeTweet = (id, token) => {
           })
         );
         if (err.response) {
-          if (err.response.statusText == 'Unauthorised') {
+          if (err.response.statusText == UNAUTHORISED) {
             dispatch(
               setError({
                 errorType: AUTHORISATION_ERROR,
-                errorMessage: INVALID_TOKEN
+                errorMessage: UNAUTHORISED
               })
             );
           } else if (err.response.data == TWEET_NOT_FOUND) {
@@ -349,11 +358,11 @@ export const unlikeTweet = (id, token) => {
           })
         );
         if (err.response) {
-          if (err.response.statusText == 'Unauthorised') {
+          if (err.response.statusText == UNAUTHORISED) {
             dispatch(
               setError({
                 errorType: AUTHORISATION_ERROR,
-                errorMessage: INVALID_TOKEN
+                errorMessage: UNAUTHORISED
               })
             );
           } else if (err.response.data == TWEET_NOT_FOUND) {

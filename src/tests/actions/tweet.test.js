@@ -29,7 +29,7 @@ const {
 } = actionStatusMessages;
 const { UPDATE_USER_TWEETS, SET_USER_TWEETS } = actionTypes.tweet;
 const {
-  INVALID_TOKEN,
+  UNAUTHORISED,
   TWEET_NOT_FOUND,
   NON_EXISTENT_USER,
   HAS_BEEN_LIKED,
@@ -114,7 +114,7 @@ describe('tweet actions', () => {
       moxios.wait(() => {
         const request = moxios.requests.mostRecent();
         request
-          .respondWith({ status: 401, statusText: 'Unauthorised' })
+          .respondWith({ status: 401, statusText: UNAUTHORISED })
           .then(() => {
             actions = store.getActions();
             expect(actions[1]).toEqual({
@@ -124,7 +124,7 @@ describe('tweet actions', () => {
             });
             expect(actions[2]).toEqual({
               type: SET_ERROR_MESSAGE,
-              errorMessage: INVALID_TOKEN,
+              errorMessage: UNAUTHORISED,
               errorType: AUTHORISATION_ERROR
             });
             done();
@@ -185,6 +185,36 @@ describe('tweet actions', () => {
               type: SET_ERROR_MESSAGE,
               errorMessage: TWEET_NOT_FOUND,
               errorType: INVALID_REQUEST
+            });
+            done();
+          });
+      });
+    });
+
+    test('should handle unauthorised requests', done => {
+      store.dispatch(retweet(tweetID));
+      let actions = store.getActions();
+      expect(actions[0]).toEqual({
+        type: SET_ACTION_STATUS,
+        actionStatus: IN_PROGRESS_MESSAGE,
+        actionName: 'retweet'
+      });
+
+      moxios.wait(() => {
+        const request = moxios.requests.mostRecent();
+        request
+          .respondWith({ status: 401, statusText: UNAUTHORISED })
+          .then(() => {
+            actions = store.getActions();
+            expect(actions[1]).toEqual({
+              type: SET_ACTION_STATUS,
+              actionStatus: FAILED_MESSAGE,
+              actionName: 'retweet'
+            });
+            expect(actions[2]).toEqual({
+              type: SET_ERROR_MESSAGE,
+              errorMessage: UNAUTHORISED,
+              errorType: AUTHORISATION_ERROR
             });
             done();
           });
@@ -324,7 +354,7 @@ describe('tweet actions', () => {
       moxios.wait(() => {
         const request = moxios.requests.mostRecent();
         request
-          .respondWith({ status: 401, statusText: 'Unauthorised' })
+          .respondWith({ status: 401, statusText: UNAUTHORISED })
           .then(() => {
             actions = store.getActions();
             expect(actions[1]).toEqual({
@@ -334,7 +364,7 @@ describe('tweet actions', () => {
             });
             expect(actions[2]).toEqual({
               type: SET_ERROR_MESSAGE,
-              errorMessage: INVALID_TOKEN,
+              errorMessage: UNAUTHORISED,
               errorType: AUTHORISATION_ERROR
             });
             done();
@@ -409,7 +439,7 @@ describe('tweet actions', () => {
       moxios.wait(() => {
         const request = moxios.requests.mostRecent();
         request
-          .respondWith({ status: 401, statusText: 'Unauthorised' })
+          .respondWith({ status: 401, statusText: UNAUTHORISED })
           .then(() => {
             actions = store.getActions();
             expect(actions[1]).toEqual({
@@ -419,7 +449,7 @@ describe('tweet actions', () => {
             });
             expect(actions[2]).toEqual({
               type: SET_ERROR_MESSAGE,
-              errorMessage: INVALID_TOKEN,
+              errorMessage: UNAUTHORISED,
               errorType: AUTHORISATION_ERROR
             });
             done();
@@ -527,7 +557,7 @@ describe('tweet actions', () => {
       moxios.wait(() => {
         const request = moxios.requests.mostRecent();
         request
-          .respondWith({ status: 401, statusText: 'Unauthorised' })
+          .respondWith({ status: 401, statusText: UNAUTHORISED })
           .then(() => {
             actions = store.getActions();
             expect(actions[1]).toEqual({
@@ -537,7 +567,7 @@ describe('tweet actions', () => {
             });
             expect(actions[2]).toEqual({
               type: SET_ERROR_MESSAGE,
-              errorMessage: INVALID_TOKEN,
+              errorMessage: UNAUTHORISED,
               errorType: AUTHORISATION_ERROR
             });
             done();

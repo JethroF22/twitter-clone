@@ -20,7 +20,8 @@ const {
   INVALID_TOKEN,
   TWEET_NOT_FOUND,
   NON_EXISTENT_USER,
-  HAS_BEEN_LIKED
+  HAS_BEEN_LIKED,
+  HAS_NOT_BEEN_LIKED
 } = errorMessages;
 const { DB_ERROR, AUTHORISATION_ERROR, INVALID_REQUEST } = errorTypes;
 
@@ -301,6 +302,72 @@ export const likeTweet = (id, token) => {
               setError({
                 errorType: INVALID_REQUEST,
                 errorMessage: HAS_BEEN_LIKED
+              })
+            );
+          }
+        } else {
+          dispatch(
+            setError({
+              errorType: DB_ERROR,
+              errorMessage: UNKNOWN_ERROR
+            })
+          );
+        }
+      });
+  };
+};
+
+export const unlikeTweet = (id, token) => {
+  return dispatch => {
+    const url = `${apiUrl}/tweet/unlike/${id}`;
+    dispatch(
+      setActionStatus({
+        actionStatus: IN_PROGRESS_MESSAGE,
+        actionName: 'unlikeTweet'
+      })
+    );
+    return axios({
+      method: 'patch',
+      url,
+      headers: {
+        'x-token': token
+      }
+    })
+      .then(res => {
+        dispatch(
+          setActionStatus({
+            actionStatus: SUCCESS_MESSAGE,
+            actionName: 'unlikeTweet'
+          })
+        );
+      })
+      .catch(err => {
+        dispatch(
+          setActionStatus({
+            actionStatus: FAILED_MESSAGE,
+            actionName: 'unlikeTweet'
+          })
+        );
+        if (err.response) {
+          if (err.response.statusText == 'Unauthorised') {
+            dispatch(
+              setError({
+                errorType: AUTHORISATION_ERROR,
+                errorMessage: INVALID_TOKEN
+              })
+            );
+          } else if (err.response.data == TWEET_NOT_FOUND) {
+            dispatch(
+              setError({
+                errorType: INVALID_REQUEST,
+                errorMessage: TWEET_NOT_FOUND
+              })
+            );
+          } else if (err.response.data == HAS_NOT_BEEN_LIKED) {
+            dispatch(
+              setError({
+                errorType: INVALID_REQUEST,
+                errorMessage: HAS_NOT_BEEN_LIKED
               })
             );
           }

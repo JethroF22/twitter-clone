@@ -35,6 +35,7 @@
     "INVALID_TOKEN": "The authentication token is invalid",
     "TWEET_NOT_FOUND": "Tweet not found",
     "NON_EXISTENT_USER": "User does not exist",
-    "HAS_BEEN_LIKED": "User has already liked this tweet"
+    "HAS_BEEN_LIKED": "User has already liked this tweet",
+    "HAS_NOT_BEEN_LIKED": "User has yet to like this tweet"
   }
 }

@@ -9,7 +9,8 @@ import {
   setUserTweets,
   fetchTweets,
   deleteTweet,
-  likeTweet
+  likeTweet,
+  unlikeTweet
 } from '../../actions/tweet';
 import {
   actionTypes,
@@ -31,7 +32,8 @@ const {
   INVALID_TOKEN,
   TWEET_NOT_FOUND,
   NON_EXISTENT_USER,
-  HAS_BEEN_LIKED
+  HAS_BEEN_LIKED,
+  HAS_NOT_BEEN_LIKED
 } = errorMessages;
 const { AUTHORISATION_ERROR, INVALID_REQUEST } = errorTypes;
 
@@ -451,6 +453,121 @@ describe('tweet actions', () => {
             expect(actions[2]).toEqual({
               type: SET_ERROR_MESSAGE,
               errorMessage: HAS_BEEN_LIKED,
+              errorType: INVALID_REQUEST
+            });
+            done();
+          });
+      });
+    });
+  });
+
+  describe('unlikeTweet', () => {
+    test('should handle successful requests', done => {
+      store.dispatch(unlikeTweet(tweetID, token));
+      let actions = store.getActions();
+      expect(actions[0]).toEqual({
+        type: SET_ACTION_STATUS,
+        actionStatus: IN_PROGRESS_MESSAGE,
+        actionName: 'unlikeTweet'
+      });
+
+      moxios.wait(() => {
+        const request = moxios.requests.mostRecent();
+        request.respondWith({ status: 200 }).then(() => {
+          actions = store.getActions();
+          expect(actions[1]).toEqual({
+            type: SET_ACTION_STATUS,
+            actionStatus: SUCCESS_MESSAGE,
+            actionName: 'unlikeTweet'
+          });
+          done();
+        });
+      });
+    });
+
+    test('should handle requests with invalid ids', done => {
+      store.dispatch(unlikeTweet('1234567890', token));
+      let actions = store.getActions();
+      expect(actions[0]).toEqual({
+        type: SET_ACTION_STATUS,
+        actionStatus: IN_PROGRESS_MESSAGE,
+        actionName: 'unlikeTweet'
+      });
+
+      moxios.wait(() => {
+        const request = moxios.requests.mostRecent();
+        request
+          .respondWith({ status: 404, response: TWEET_NOT_FOUND })
+          .then(() => {
+            actions = store.getActions();
+            expect(actions[1]).toEqual({
+              type: SET_ACTION_STATUS,
+              actionStatus: FAILED_MESSAGE,
+              actionName: 'unlikeTweet'
+            });
+            expect(actions[2]).toEqual({
+              type: SET_ERROR_MESSAGE,
+              errorMessage: TWEET_NOT_FOUND,
+              errorType: INVALID_REQUEST
+            });
+            done();
+          });
+      });
+    });
+
+    test('should handle unauthorised requests', done => {
+      store.dispatch(unlikeTweet(tweetID));
+      let actions = store.getActions();
+      expect(actions[0]).toEqual({
+        type: SET_ACTION_STATUS,
+        actionStatus: IN_PROGRESS_MESSAGE,
+        actionName: 'unlikeTweet'
+      });
+
+      moxios.wait(() => {
+        const request = moxios.requests.mostRecent();
+        request
+          .respondWith({ status: 401, statusText: 'Unauthorised' })
+          .then(() => {
+            actions = store.getActions();
+            expect(actions[1]).toEqual({
+              type: SET_ACTION_STATUS,
+              actionStatus: FAILED_MESSAGE,
+              actionName: 'unlikeTweet'
+            });
+            expect(actions[2]).toEqual({
+              type: SET_ERROR_MESSAGE,
+              errorMessage: INVALID_TOKEN,
+              errorType: AUTHORISATION_ERROR
+            });
+            done();
+          });
+      });
+    });
+
+    test('should handle requests for tweets user has not yet liked ', done => {
+      store.dispatch(unlikeTweet(tweetID));
+      let actions = store.getActions();
+      expect(actions[0]).toEqual({
+        type: SET_ACTION_STATUS,
+        actionStatus: IN_PROGRESS_MESSAGE,
+        actionName: 'unlikeTweet'
+      });
+
+      moxios.wait(() => {
+        const request = moxios.requests.mostRecent();
+        request
+          .respondWith({ status: 400, response: HAS_NOT_BEEN_LIKED })
+          .then(() => {
+            actions = store.getActions();
+            expect(actions[1]).toEqual({
+              type: SET_ACTION_STATUS,
+              actionStatus: FAILED_MESSAGE,
+              actionName: 'unlikeTweet'
+            });
+            expect(actions[2]).toEqual({
+              type: SET_ERROR_MESSAGE,
+              errorMessage: HAS_NOT_BEEN_LIKED,
               errorType: INVALID_REQUEST
             });
             done();

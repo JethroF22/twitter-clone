@@ -19,7 +19,14 @@ const users = [
     email: 'jethro@gmail.com',
     handle: 'iamjethro',
     password: 'password1',
-    token: jwt.sign({ id: userOneID }, process.env.SECRET_KEY)
+    token: jwt.sign({ id: userOneID }, process.env.SECRET_KEY),
+    following: {
+      _id: userTwoID,
+      user: {
+        name: 'NariRoh',
+        handle: 'iamnari'
+      }
+    }
   },
   {
     _id: userTwoID,
@@ -32,7 +39,14 @@ const users = [
       {
         _id: tweetOneID
       }
-    ]
+    ],
+    followers: {
+      _id: userOneID,
+      user: {
+        name: 'Jethro',
+        handle: 'iamjethro'
+      }
+    }
   },
   {
     _id: userThreeID,

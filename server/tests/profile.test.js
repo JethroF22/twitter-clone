@@ -109,6 +109,20 @@ describe('/profile', () => {
           })
           .end(done);
       });
+
+      it('should return an error for previously followed users', done => {
+        user = users[0];
+        id = users[1]._id;
+
+        request(app)
+          .patch(`/profile/follow/${id}`)
+          .set('x-token', user.token)
+          .expect(400)
+          .expect(res => {
+            expect(res.error.text).to.equal('Already following user');
+          })
+          .end(done);
+      });
     });
   });
 });

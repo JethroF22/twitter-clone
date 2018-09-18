@@ -7,6 +7,34 @@ const User = require('../models/user');
 
 const router = express.Router();
 
+// GET routes
+router.get('/view/:id', (req, res) => {
+  const id = req.params.id;
+
+  User.findById(id)
+    .then(user => {
+      if (!user) {
+        return res.status(404).send('User does not exist');
+      }
+
+      const userProfile = _.pick(user, [
+        'bio',
+        'photo',
+        'coverPhoto',
+        'followers',
+        'following',
+        'likedTweets'
+      ]);
+
+      res.send(userProfile);
+    })
+    .catch(err => {
+      const errors = errorParser(err);
+      res.status(400).send(errors);
+    });
+});
+
+// PATCH routes
 router.patch('/edit', authenticate, (req, res) => {
   const user = req.user;
   const profileDetails = _.pick(req.body, ['bio', 'photo', 'coverPhoto']);
@@ -104,12 +132,6 @@ router.patch('/unfollow/:id', authenticate, (req, res) => {
     { new: true, runValidators: true }
   )
     .then(followedUser => {
-      const following = _.pick(followedUser, ['_id', 'photo']);
-      following.user = {
-        name: followedUser.name,
-        handle: followedUser.handle
-      };
-
       user.following = user.following.filter(
         currentlyFollowing => currentlyFollowing.user.name !== followedUser.name
       );

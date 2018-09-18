@@ -8,6 +8,41 @@ const { populateUsers, users, userProfiles } = require('./seed/seed');
 let user, id, profile;
 
 describe('/profile', () => {
+  describe('GET', () => {
+    describe('/view/:id', () => {
+      beforeEach(function(done) {
+        this.timeout(0);
+        user = users[2];
+        profile = userProfiles[2];
+        populateUsers(done);
+      });
+
+      it("should fetch a user's profile", done => {
+        id = user._id;
+
+        request(app)
+          .get(`/profile/view/${id}`)
+          .expect(200)
+          .expect(res => {
+            expect(res.body).to.deep.equal(profile);
+          })
+          .end(done);
+      });
+
+      it('should return an error for invalid ids', done => {
+        id = new ObjectID();
+
+        request(app)
+          .get(`/profile/view/${id}`)
+          .expect(404)
+          .expect(res => {
+            expect(res.error.text).to.equal('User does not exist');
+          })
+          .end(done);
+      });
+    });
+  });
+
   describe('PATCH', () => {
     describe('/edit', () => {
       beforeEach(function(done) {

@@ -9,11 +9,12 @@
       "SET_USER_DETAILS": "SET_USER_DETAILS",
       "SET_TOKEN": "SET_TOKEN"
     },
-    "status": {
-      "SET_ACTION_STATUS": "SET_ACTION_STATUS"
-    },
     "error": {
       "SET_ERROR_MESSAGE": "SET_ERROR_MESSAGE"
+    },
+    "profile": { "SET_USER_PROFILE": "SET_USER_PROFILE" },
+    "status": {
+      "SET_ACTION_STATUS": "SET_ACTION_STATUS"
     },
     "tweet": {
       "UPDATE_USER_TWEETS": "UPDATE_USER_TWEETS",

@@ -124,5 +124,55 @@ describe('/profile', () => {
           .end(done);
       });
     });
+
+    describe('/unfollow/:id', () => {
+      beforeEach(function(done) {
+        this.timeout(0);
+        user = users[0];
+        populateUsers(done);
+      });
+
+      it("should update 2 user's profiles", done => {
+        const followedUser = users[1];
+
+        request(app)
+          .patch(`/profile/unfollow/${followedUser._id}`)
+          .set('x-token', user.token)
+          .expect(200)
+          .expect(res => {
+            expect(res.body.followedUser.followers.length).to.equal(0);
+            expect(res.body.user.following.length).to.equal(0);
+          })
+          .end(done);
+      });
+
+      it('should return an error for unauthorised requests', done => {
+        id = user._id;
+
+        request(app)
+          .patch(`/profile/unfollow/${id}`)
+          .expect(401)
+          .expect(res => {
+            expect(res.res.statusMessage).to.equal('Unauthorized');
+          })
+          .end(done);
+      });
+
+      it("should return an error for users that haven't previously been followed", done => {
+        user = users[1];
+        id = users[2]._id;
+
+        request(app)
+          .patch(`/profile/unfollow/${id}`)
+          .set('x-token', user.token)
+          .expect(400)
+          .expect(res => {
+            expect(res.error.text).to.equal(
+              'User is not currently being followed'
+            );
+          })
+          .end(done);
+      });
+    });
   });
 });

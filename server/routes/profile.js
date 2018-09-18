@@ -70,13 +70,12 @@ router.patch('/follow/:id', authenticate, (req, res) => {
       });
     })
     .catch(err => {
-      console.log(err);
       const errors = errorParser(err);
       res.status(400).send(errors);
     });
 });
 
-router.patch('/follow/:id', authenticate, (req, res) => {
+router.patch('/unfollow/:id', authenticate, (req, res) => {
   const id = req.params.id;
   const user = req.user;
   const follower = {
@@ -88,27 +87,32 @@ router.patch('/follow/:id', authenticate, (req, res) => {
     photo: user.photo
   };
 
+  const hasBeenFollowed = user.following.find(
+    following => following._id.toHexString() === id
+  );
+  if (!hasBeenFollowed) {
+    return res.status(400).send('User is not currently being followed');
+  }
+
   User.findByIdAndUpdate(
     id,
     {
-      $push: {
+      $pull: {
         followers: follower
       }
     },
     { new: true, runValidators: true }
   )
     .then(followedUser => {
-      if (!followedUser) {
-        return res.status(404).send('User does not exist');
-      }
-
       const following = _.pick(followedUser, ['_id', 'photo']);
       following.user = {
         name: followedUser.name,
         handle: followedUser.handle
       };
 
-      user.following.push(following);
+      user.following = user.following.filter(
+        currentlyFollowing => currentlyFollowing.user.name !== followedUser.name
+      );
       user.save().then(user => {
         res.send({ followedUser, user });
       });

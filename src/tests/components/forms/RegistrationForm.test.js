@@ -36,7 +36,10 @@ describe('Registration Form', () => {
     wrapper.find('form').simulate('submit', { preventDefault: () => {} });
     expect(wrapper.state('errors')).toEqual({});
     expect(registerUserSpy).toHaveBeenLastCalledWith({
-      ...user
+      name: user.name,
+      handle: user.handle,
+      email: user.email,
+      password: user.password
     });
   });
 

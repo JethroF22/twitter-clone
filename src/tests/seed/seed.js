@@ -1,22 +1,27 @@
 import { ObjectID } from 'mongodb';
 
-export const userID = new ObjectID();
+const userOneID = new ObjectID().toHexString();
+const userTwoID = new ObjectID().toHexString();
+const userThreeID = new ObjectID().toHexString();
 export const tweetID = new ObjectID();
 
 export const users = [
   {
+    _id: userOneID,
     name: 'Jethro Fredericks',
     password: 'iamjethro',
     handle: 'KingJethro',
     email: 'jethro@gmail.com'
   },
   {
+    _id: userTwoID,
     name: 'Neill Gerber',
     password: 'iamneill',
     handle: 'NeillG',
     email: 'neillg@gmail.com'
   },
   {
+    _id: userThreeID,
     name: 'Justin Heidoe',
     password: 'iamjustin',
     handle: 'TheIndian',
@@ -28,14 +33,14 @@ export const tweets = [
   {
     body: 'This is a test',
     user: {
-      _id: userID
+      _id: userOneID
     },
     _id: tweetID
   },
   {
     body: 'Peter Piper picked a peck of pickled peppers',
     user: {
-      _id: userID
+      _id: userTwoID
     }
   }
 ];

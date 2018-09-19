@@ -9,7 +9,7 @@ import {
   actionTypes
 } from '../config/const.json';
 
-const { SET_USER_PROFILE } = actionTypes.profile;
+const { SET_USER_PROFILE, VIEW_PROFILE } = actionTypes.profile;
 const {
   IN_PROGRESS_MESSAGE,
   SUCCESS_MESSAGE,
@@ -23,6 +23,11 @@ const apiUrl = process.env.API_URL || '';
 export const setUserProfile = userProfile => ({
   type: SET_USER_PROFILE,
   userProfile
+});
+
+export const viewUserProfile = profile => ({
+  type: VIEW_PROFILE,
+  profile
 });
 
 export const getUserProfile = id => {
@@ -47,6 +52,7 @@ export const getUserProfile = id => {
             actionName: 'getUserProfile'
           })
         );
+
         dispatch(setUserProfile(userProfile));
       })
       .catch(err => {

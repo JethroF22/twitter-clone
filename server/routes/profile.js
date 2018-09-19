@@ -18,6 +18,8 @@ router.get('/view/:id', (req, res) => {
       }
 
       const userProfile = _.pick(user, [
+        'name',
+        '_id',
         'bio',
         'photo',
         'coverPhoto',

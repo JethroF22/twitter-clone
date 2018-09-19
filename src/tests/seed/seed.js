@@ -42,6 +42,7 @@ export const tweets = [
 
 export const userProfiles = [
   {
+    name: users[0].name,
     bio:
       'Award-winning entrepreneur. Professional analyst. Creator. Travel advocate.',
     coverPhoto:
@@ -50,6 +51,7 @@ export const userProfiles = [
       'https://images.pexels.com/photos/1409980/pexels-photo-1409980.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940'
   },
   {
+    name: users[1].name,
     bio:
       'Award-winning entrepreneur. Professional analyst. Creator. Travel advocate.',
     coverPhoto:
@@ -58,6 +60,7 @@ export const userProfiles = [
       'https://images.pexels.com/photos/1399282/pexels-photo-1399282.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350'
   },
   {
+    name: users[2].name,
     bio:
       'Award-winning entrepreneur. Professional analyst. Creator. Travel advocate.',
     coverPhoto:

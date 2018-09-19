@@ -9,7 +9,7 @@ import {
   actionTypes
 } from '../config/const.json';
 
-const { SET_USER_PROFILE } = actionTypes.profile;
+const { SET_USER_PROFILE, VIEW_PROFILE } = actionTypes.profile;
 const {
   IN_PROGRESS_MESSAGE,
   SUCCESS_MESSAGE,
@@ -25,7 +25,12 @@ export const setUserProfile = userProfile => ({
   userProfile
 });
 
-export const getUserProfile = id => {
+export const viewUserProfile = profile => ({
+  type: VIEW_PROFILE,
+  profile
+});
+
+export const getUserProfile = (id, currentUser) => {
   return dispatch => {
     const url = `${apiUrl}/profile/view/${id}`;
     dispatch(
@@ -34,10 +39,7 @@ export const getUserProfile = id => {
         actionName: 'getUserProfile'
       })
     );
-    return axios({
-      method: 'get',
-      url
-    })
+    return axios({ method: 'get', url })
       .then(res => {
         const userProfile = res.data;
 
@@ -47,7 +49,12 @@ export const getUserProfile = id => {
             actionName: 'getUserProfile'
           })
         );
-        dispatch(setUserProfile(userProfile));
+
+        if (userProfile.name === currentUser) {
+          dispatch(setUserProfile(userProfile));
+        } else {
+          dispatch(viewUserProfile(userProfile));
+        }
       })
       .catch(err => {
         dispatch(

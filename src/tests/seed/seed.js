@@ -39,3 +39,30 @@ export const tweets = [
     }
   }
 ];
+
+export const userProfiles = [
+  {
+    bio:
+      'Award-winning entrepreneur. Professional analyst. Creator. Travel advocate.',
+    coverPhoto:
+      'https://images.pexels.com/photos/1053775/pexels-photo-1053775.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
+    photo:
+      'https://images.pexels.com/photos/1409980/pexels-photo-1409980.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940'
+  },
+  {
+    bio:
+      'Award-winning entrepreneur. Professional analyst. Creator. Travel advocate.',
+    coverPhoto:
+      'https://images.pexels.com/photos/1036857/pexels-photo-1036857.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350',
+    photo:
+      'https://images.pexels.com/photos/1399282/pexels-photo-1399282.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350'
+  },
+  {
+    bio:
+      'Award-winning entrepreneur. Professional analyst. Creator. Travel advocate.',
+    coverPhoto:
+      'https://images.pexels.com/photos/1130287/pexels-photo-1130287.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350',
+    photo:
+      'https://images.pexels.com/photos/1416822/pexels-photo-1416822.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940'
+  }
+];

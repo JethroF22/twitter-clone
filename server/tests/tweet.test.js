@@ -174,7 +174,7 @@ describe('/tweet', () => {
           .expect(res => {
             expect(res.body.tweet.likes).to.equal(1);
             expect(res.body.user.likedTweets[0]).to.deep.equal({
-              _id: id.toHexString()
+              _id: id
             });
           })
           .end(done);

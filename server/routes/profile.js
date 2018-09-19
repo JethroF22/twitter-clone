@@ -17,16 +17,7 @@ router.get('/view/:id', (req, res) => {
         return res.status(404).send('User does not exist');
       }
 
-      const userProfile = _.pick(user, [
-        'name',
-        '_id',
-        'bio',
-        'photo',
-        'coverPhoto',
-        'followers',
-        'following',
-        'likedTweets'
-      ]);
+      const userProfile = user.getProfileDetails();
 
       res.send(userProfile);
     })
@@ -142,7 +133,6 @@ router.patch('/unfollow/:id', authenticate, (req, res) => {
       });
     })
     .catch(err => {
-      console.log(err);
       const errors = errorParser(err);
       res.status(400).send(errors);
     });

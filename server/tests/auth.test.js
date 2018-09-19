@@ -3,7 +3,7 @@ const { expect } = require('chai');
 
 const app = require('../server');
 const User = require('../models/user');
-const { populateUsers, users } = require('./seed/seed');
+const { populateUsers, users } = require('../../config/seed');
 
 describe('/auth', () => {
   let user;

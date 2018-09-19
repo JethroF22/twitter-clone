@@ -1,7 +1,7 @@
 import tweetReducer from '../../reducers/tweet';
 
 import { actionTypes } from '../../config/const.json';
-import { tweets } from '../seed/seed';
+import { tweets } from '../../../config/seed';
 const { UPDATE_USER_TWEETS, SET_USER_TWEETS } = actionTypes.tweet;
 
 test("should update the user's tweets", () => {

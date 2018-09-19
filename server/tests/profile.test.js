@@ -3,7 +3,7 @@ const { expect } = require('chai');
 const { ObjectID } = require('mongodb');
 
 const app = require('../server');
-const { populateUsers, users, userProfiles } = require('./seed/seed');
+const { populateUsers, users, userProfiles } = require('../../config/seed');
 
 let user, id, profile;
 

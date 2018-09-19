@@ -5,7 +5,8 @@ import moxios from 'moxios';
 import {
   followUser,
   getUserProfile,
-  setUserProfile
+  setUserProfile,
+  unfollowUser
 } from '../../actions/profile';
 import {
   actionTypes,
@@ -13,7 +14,7 @@ import {
   errorMessages,
   errorTypes
 } from '../../config/const.json';
-import { userID, userProfiles, users } from '../seed/seed';
+import { userProfiles, users } from '../../../config/seed';
 
 const { SET_ACTION_STATUS } = actionTypes.status;
 const { SET_ERROR_MESSAGE } = actionTypes.error;
@@ -27,13 +28,14 @@ const { NON_EXISTENT_USER, UNAUTHORISED } = errorMessages;
 const { AUTHORISATION_ERROR, INVALID_REQUEST } = errorTypes;
 
 const createMockStore = configureMockStore([thunk]);
-let followedUser, id, store, profile, token, user;
+let followedUser, id, store, profile, token, user, userID;
 
 describe('profile actions', () => {
   beforeEach(() => {
     store = createMockStore(() => ({ tweet: { tweets } }));
-    profile = userProfiles[0];
     user = users[0];
+    profile = { ...userProfiles[0], name: user.name };
+    userID = user._id;
     token = '1234567890';
     id = 'notavalidid';
     moxios.install();
@@ -84,6 +86,10 @@ describe('profile actions', () => {
     });
 
     test("should handle successful requests to view a different user's profile", done => {
+      const viewedProfile = {
+        ...userProfiles[1],
+        name: users[1].name
+      };
       store.dispatch(getUserProfile(userID, profile.name));
       let actions = store.getActions();
       expect(actions[0]).toEqual({
@@ -95,7 +101,7 @@ describe('profile actions', () => {
       moxios.wait(() => {
         const request = moxios.requests.mostRecent();
         request
-          .respondWith({ status: 200, response: userProfiles[1] })
+          .respondWith({ status: 200, response: viewedProfile })
           .then(() => {
             actions = store.getActions();
             expect(actions[1]).toEqual({
@@ -105,7 +111,7 @@ describe('profile actions', () => {
             });
             expect(actions[2]).toEqual({
               type: VIEW_PROFILE,
-              profile: userProfiles[1]
+              profile: viewedProfile
             });
             done();
           });

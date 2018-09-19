@@ -5,7 +5,12 @@ const { ObjectID } = require('mongodb');
 const app = require('../server');
 const Tweet = require('../models/tweet');
 const User = require('../models/user');
-const { tweets, users, populateTweets, populateUsers } = require('./seed/seed');
+const {
+  tweets,
+  users,
+  populateTweets,
+  populateUsers
+} = require('../../config/seed');
 
 let tweet, id, token, user;
 

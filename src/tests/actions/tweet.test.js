@@ -18,7 +18,7 @@ import {
   errorMessages,
   errorTypes
 } from '../../config/const.json';
-import { tweets, tweetID, users } from '../seed/seed';
+import { tweets, tweetID, users } from '../../../config/seed';
 
 const { SET_ACTION_STATUS } = actionTypes.status;
 const { SET_ERROR_MESSAGE } = actionTypes.error;

@@ -12,7 +12,10 @@
     "error": {
       "SET_ERROR_MESSAGE": "SET_ERROR_MESSAGE"
     },
-    "profile": { "SET_USER_PROFILE": "SET_USER_PROFILE" },
+    "profile": {
+      "SET_USER_PROFILE": "SET_USER_PROFILE",
+      "VIEW_PROFILE": "VIEW_PROFILE"
+    },
     "status": {
       "SET_ACTION_STATUS": "SET_ACTION_STATUS"
     },

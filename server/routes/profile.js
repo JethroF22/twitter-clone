@@ -87,7 +87,10 @@ router.patch('/follow/:id', authenticate, (req, res) => {
 
       user.following.push(following);
       user.save().then(user => {
-        res.send({ followedUser, user });
+        res.send({
+          followedUser: followedUser.getProfileDetails(),
+          user: user.getProfileDetails()
+        });
       });
     })
     .catch(err => {
@@ -129,7 +132,10 @@ router.patch('/unfollow/:id', authenticate, (req, res) => {
         currentlyFollowing => currentlyFollowing.user.name !== followedUser.name
       );
       user.save().then(user => {
-        res.send({ followedUser, user });
+        res.send({
+          followedUser: followedUser.getProfileDetails(),
+          user: user.getProfileDetails()
+        });
       });
     })
     .catch(err => {

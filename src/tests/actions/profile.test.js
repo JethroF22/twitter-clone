@@ -2,14 +2,18 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import moxios from 'moxios';
 
-import { setUserProfile, getUserProfile } from '../../actions/profile';
+import {
+  followUser,
+  getUserProfile,
+  setUserProfile
+} from '../../actions/profile';
 import {
   actionTypes,
   actionStatusMessages,
   errorMessages,
   errorTypes
 } from '../../config/const.json';
-import { userID, userProfiles } from '../seed/seed';
+import { userID, userProfiles, users } from '../seed/seed';
 
 const { SET_ACTION_STATUS } = actionTypes.status;
 const { SET_ERROR_MESSAGE } = actionTypes.error;
@@ -19,16 +23,17 @@ const {
   FAILED_MESSAGE
 } = actionStatusMessages;
 const { SET_USER_PROFILE, VIEW_PROFILE } = actionTypes.profile;
-const { UNAUTHORISED, NON_EXISTENT_USER } = errorMessages;
+const { NON_EXISTENT_USER, UNAUTHORISED } = errorMessages;
 const { AUTHORISATION_ERROR, INVALID_REQUEST } = errorTypes;
 
 const createMockStore = configureMockStore([thunk]);
-let store, profile, token, id;
+let followedUser, id, store, profile, token, user;
 
 describe('profile actions', () => {
   beforeEach(() => {
     store = createMockStore(() => ({ tweet: { tweets } }));
     profile = userProfiles[0];
+    user = users[0];
     token = '1234567890';
     id = 'notavalidid';
     moxios.install();
@@ -131,6 +136,110 @@ describe('profile actions', () => {
               type: SET_ERROR_MESSAGE,
               errorMessage: NON_EXISTENT_USER,
               errorType: INVALID_REQUEST
+            });
+            done();
+          });
+      });
+    });
+  });
+
+  describe('followUser', () => {
+    test('should handle successful requests', done => {
+      followedUser = users[1];
+      store.dispatch(followUser(followedUser._id, token));
+      let actions = store.getActions();
+      expect(actions[0]).toEqual({
+        type: SET_ACTION_STATUS,
+        actionStatus: IN_PROGRESS_MESSAGE,
+        actionName: 'followUser'
+      });
+
+      moxios.wait(() => {
+        const request = moxios.requests.mostRecent();
+        request
+          .respondWith({
+            status: 200,
+            response: {
+              followedUser,
+              user
+            }
+          })
+          .then(() => {
+            actions = store.getActions();
+            expect(actions[1]).toEqual({
+              type: SET_ACTION_STATUS,
+              actionStatus: SUCCESS_MESSAGE,
+              actionName: 'followUser'
+            });
+            expect(actions[2]).toEqual({
+              type: SET_USER_PROFILE,
+              userProfile: user
+            });
+            expect(actions[3]).toEqual({
+              type: VIEW_PROFILE,
+              profile: followedUser
+            });
+            done();
+          });
+      });
+    });
+
+    test('should handle requests with invalid ids', done => {
+      id = '1234567890';
+      store.dispatch(followUser(id, token));
+      let actions = store.getActions();
+      expect(actions[0]).toEqual({
+        type: SET_ACTION_STATUS,
+        actionStatus: IN_PROGRESS_MESSAGE,
+        actionName: 'followUser'
+      });
+
+      moxios.wait(() => {
+        const request = moxios.requests.mostRecent();
+        request
+          .respondWith({ status: 404, response: NON_EXISTENT_USER })
+          .then(() => {
+            actions = store.getActions();
+            expect(actions[1]).toEqual({
+              type: SET_ACTION_STATUS,
+              actionStatus: FAILED_MESSAGE,
+              actionName: 'followUser'
+            });
+            expect(actions[2]).toEqual({
+              type: SET_ERROR_MESSAGE,
+              errorMessage: NON_EXISTENT_USER,
+              errorType: INVALID_REQUEST
+            });
+            done();
+          });
+      });
+    });
+
+    test('should handle unauthorised requests', done => {
+      followedUser = users[1];
+      store.dispatch(followUser(followedUser._id));
+      let actions = store.getActions();
+      expect(actions[0]).toEqual({
+        type: SET_ACTION_STATUS,
+        actionStatus: IN_PROGRESS_MESSAGE,
+        actionName: 'followUser'
+      });
+
+      moxios.wait(() => {
+        const request = moxios.requests.mostRecent();
+        request
+          .respondWith({ status: 401, statusText: UNAUTHORISED })
+          .then(() => {
+            actions = store.getActions();
+            expect(actions[1]).toEqual({
+              type: SET_ACTION_STATUS,
+              actionStatus: FAILED_MESSAGE,
+              actionName: 'followUser'
+            });
+            expect(actions[2]).toEqual({
+              type: SET_ERROR_MESSAGE,
+              errorMessage: UNAUTHORISED,
+              errorType: AUTHORISATION_ERROR
             });
             done();
           });

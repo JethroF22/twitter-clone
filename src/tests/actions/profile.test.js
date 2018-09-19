@@ -18,14 +18,8 @@ const {
   IN_PROGRESS_MESSAGE,
   FAILED_MESSAGE
 } = actionStatusMessages;
-const { SET_USER_PROFILE } = actionTypes.profile;
-const {
-  UNAUTHORISED,
-  TWEET_NOT_FOUND,
-  NON_EXISTENT_USER,
-  HAS_BEEN_LIKED,
-  HAS_NOT_BEEN_LIKED
-} = errorMessages;
+const { SET_USER_PROFILE, VIEW_PROFILE } = actionTypes.profile;
+const { UNAUTHORISED, NON_EXISTENT_USER } = errorMessages;
 const { AUTHORISATION_ERROR, INVALID_REQUEST } = errorTypes;
 
 const createMockStore = configureMockStore([thunk]);
@@ -52,8 +46,8 @@ describe('profile actions', () => {
   });
 
   describe('getUserProfile', () => {
-    test('should handle successful requests', done => {
-      store.dispatch(getUserProfile(userID));
+    test("should handle successful requests to view the authenticated user's own profile", done => {
+      store.dispatch(getUserProfile(userID, profile.name));
       let actions = store.getActions();
       expect(actions[0]).toEqual({
         type: SET_ACTION_STATUS,
@@ -78,6 +72,35 @@ describe('profile actions', () => {
             expect(actions[2]).toEqual({
               type: SET_USER_PROFILE,
               userProfile: profile
+            });
+            done();
+          });
+      });
+    });
+
+    test("should handle successful requests to view a different user's profile", done => {
+      store.dispatch(getUserProfile(userID, profile.name));
+      let actions = store.getActions();
+      expect(actions[0]).toEqual({
+        type: SET_ACTION_STATUS,
+        actionStatus: IN_PROGRESS_MESSAGE,
+        actionName: 'getUserProfile'
+      });
+
+      moxios.wait(() => {
+        const request = moxios.requests.mostRecent();
+        request
+          .respondWith({ status: 200, response: userProfiles[1] })
+          .then(() => {
+            actions = store.getActions();
+            expect(actions[1]).toEqual({
+              type: SET_ACTION_STATUS,
+              actionStatus: SUCCESS_MESSAGE,
+              actionName: 'getUserProfile'
+            });
+            expect(actions[2]).toEqual({
+              type: VIEW_PROFILE,
+              profile: userProfiles[1]
             });
             done();
           });

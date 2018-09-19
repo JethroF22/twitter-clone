@@ -203,6 +203,20 @@ UserSchema.methods.generateAuthToken = function() {
   user.token = token;
 };
 
+UserSchema.methods.getProfileDetails = function() {
+  const user = this;
+  return _.pick(user, [
+    'name',
+    '_id',
+    'bio',
+    'photo',
+    'coverPhoto',
+    'followers',
+    'following',
+    'likedTweets'
+  ]);
+};
+
 UserSchema.statics.findByCredentials = function(
   { email, password } = { ...credentials }
 ) {

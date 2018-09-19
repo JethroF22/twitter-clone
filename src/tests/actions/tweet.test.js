@@ -18,7 +18,7 @@ import {
   errorMessages,
   errorTypes
 } from '../../config/const.json';
-import { tweets, userID, tweetID } from '../seed/seed';
+import { tweets, tweetID, users } from '../seed/seed';
 
 const { SET_ACTION_STATUS } = actionTypes.status;
 const { SET_ERROR_MESSAGE } = actionTypes.error;
@@ -38,13 +38,14 @@ const {
 const { AUTHORISATION_ERROR, INVALID_REQUEST } = errorTypes;
 
 const createMockStore = configureMockStore([thunk]);
-let store, tweet, token;
+let store, tweet, token, userID;
 
 describe('tweet actions', () => {
   beforeEach(() => {
     store = createMockStore(() => ({ tweet: { tweets } }));
     tweet = tweets[0];
     token = '1234567890';
+    userID = users[0]._id;
     moxios.install();
   });
 

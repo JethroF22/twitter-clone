@@ -24,7 +24,7 @@ describe('/profile', () => {
           .get(`/profile/view/${id}`)
           .expect(200)
           .expect(res => {
-            expect(res.body).to.deep.equal(profile);
+            expect(res.body._id).to.equal(id);
           })
           .end(done);
       });

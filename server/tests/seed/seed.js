@@ -4,11 +4,11 @@ const jwt = require('jsonwebtoken');
 const User = require('../../models/user');
 const Tweet = require('../../models/tweet');
 
-const userOneID = new ObjectID();
-const userTwoID = new ObjectID();
-const userThreeID = new ObjectID();
-const tweetOneID = new ObjectID();
-const tweetTwoID = new ObjectID();
+const userOneID = new ObjectID().toHexString();
+const userTwoID = new ObjectID().toHexString();
+const userThreeID = new ObjectID().toHexString();
+const tweetOneID = new ObjectID().toHexString();
+const tweetTwoID = new ObjectID().toHexString();
 
 const userProfiles = [
   {
@@ -36,7 +36,7 @@ const userProfiles = [
       'https://images.pexels.com/photos/1416822/pexels-photo-1416822.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
     likedTweets: [
       {
-        _id: tweetTwoID.toHexString()
+        _id: tweetTwoID
       }
     ],
     following: [],
@@ -57,8 +57,10 @@ const users = [
       user: {
         name: 'NariRoh',
         handle: 'iamnari'
-      }
-    }
+      },
+      photo: userProfiles[1].photo
+    },
+    ...userProfiles[0]
   },
   {
     _id: userTwoID,
@@ -77,8 +79,10 @@ const users = [
       user: {
         name: 'Jethro',
         handle: 'iamjethro'
-      }
-    }
+      },
+      photo: userProfiles[0].photo
+    },
+    ...userProfiles[1]
   },
   {
     _id: userThreeID,

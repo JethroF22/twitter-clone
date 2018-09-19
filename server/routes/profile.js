@@ -17,16 +17,7 @@ router.get('/view/:id', (req, res) => {
         return res.status(404).send('User does not exist');
       }
 
-      const userProfile = _.pick(user, [
-        'name',
-        '_id',
-        'bio',
-        'photo',
-        'coverPhoto',
-        'followers',
-        'following',
-        'likedTweets'
-      ]);
+      const userProfile = user.getProfileDetails();
 
       res.send(userProfile);
     })
@@ -96,7 +87,10 @@ router.patch('/follow/:id', authenticate, (req, res) => {
 
       user.following.push(following);
       user.save().then(user => {
-        res.send({ followedUser, user });
+        res.send({
+          followedUser: followedUser.getProfileDetails(),
+          user: user.getProfileDetails()
+        });
       });
     })
     .catch(err => {
@@ -138,11 +132,13 @@ router.patch('/unfollow/:id', authenticate, (req, res) => {
         currentlyFollowing => currentlyFollowing.user.name !== followedUser.name
       );
       user.save().then(user => {
-        res.send({ followedUser, user });
+        res.send({
+          followedUser: followedUser.getProfileDetails(),
+          user: user.getProfileDetails()
+        });
       });
     })
     .catch(err => {
-      console.log(err);
       const errors = errorParser(err);
       res.status(400).send(errors);
     });

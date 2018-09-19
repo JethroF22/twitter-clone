@@ -30,7 +30,7 @@ export const viewUserProfile = profile => ({
   profile
 });
 
-export const getUserProfile = id => {
+export const getUserProfile = (id, currentUser) => {
   return dispatch => {
     const url = `${apiUrl}/profile/view/${id}`;
     dispatch(
@@ -39,10 +39,7 @@ export const getUserProfile = id => {
         actionName: 'getUserProfile'
       })
     );
-    return axios({
-      method: 'get',
-      url
-    })
+    return axios({ method: 'get', url })
       .then(res => {
         const userProfile = res.data;
 
@@ -53,7 +50,11 @@ export const getUserProfile = id => {
           })
         );
 
-        dispatch(setUserProfile(userProfile));
+        if (userProfile.name === currentUser) {
+          dispatch(setUserProfile(userProfile));
+        } else {
+          dispatch(viewUserProfile(userProfile));
+        }
       })
       .catch(err => {
         dispatch(

@@ -1,8 +1,8 @@
 {
   "actionStatusMessages": {
-    "SUCCESS_MESSAGE": "Successful",
+    "FAILED_MESSAGE": "Failed",
     "IN_PROGRESS_MESSAGE": "In Progress",
-    "FAILED_MESSAGE": "Failed"
+    "SUCCESS_MESSAGE": "Successful"
   },
   "actionTypes": {
     "auth": {
@@ -20,30 +20,31 @@
       "SET_ACTION_STATUS": "SET_ACTION_STATUS"
     },
     "tweet": {
-      "UPDATE_USER_TWEETS": "UPDATE_USER_TWEETS",
-      "SET_USER_TWEETS": "SET_USER_TWEETS"
+      "SET_USER_TWEETS": "SET_USER_TWEETS",
+      "UPDATE_USER_TWEETS": "UPDATE_USER_TWEETS"
     }
   },
   "errorTypes": {
-    "DB_ERROR": "DB Error",
     "AUTHENTICATION_ERROR": "Authentication Error",
     "AUTHORISATION_ERROR": "Authorisation Error",
+    "DB_ERROR": "DB Error",
     "INVALID_REQUEST": "Invalid Request"
   },
   "errorMessages": {
-    "VALIDATION_ERROR": "Validation Error",
+    "CANT_BE_FOLLOWED": "Users cannot follow themselves",
     "DUPLICATE_EMAIL": "Duplicate email",
     "DUPLICATE_HANDLE": "Duplicate handle",
-    "UNKNOWN_ERROR": "Unknown DB error",
-    "INVALID_CREDENTIALS": "Invalid email/password combination",
-    "UNAUTHORISED": "Unauthorised",
-    "TWEET_NOT_FOUND": "Tweet not found",
-    "TWEETS_NOT_FOUND": "User has yet to tweet anything",
-    "USER_NOT_FOUND": "User not found",
     "HAS_BEEN_LIKED": "User has already liked this tweet",
     "HAS_NOT_BEEN_LIKED": "User has yet to like this tweet",
     "HAS_BEEN_RETWEETED": "Cannot retweet the same tweet more than once",
     "HAS_BEEN_FOLLOWED": "Already following user",
-    "HAS_NOT_BEEN_FOLLOWED": "User is not currently being followed"
+    "HAS_NOT_BEEN_FOLLOWED": "User is not currently being followed",
+    "INVALID_CREDENTIALS": "Invalid email/password combination",
+    "TWEET_NOT_FOUND": "Tweet not found",
+    "TWEETS_NOT_FOUND": "User has yet to tweet anything",
+    "UNKNOWN_ERROR": "Unknown DB error",
+    "UNAUTHORISED": "Unauthorised",
+    "USER_NOT_FOUND": "User not found",
+    "VALIDATION_ERROR": "Validation Error"
   }
 }

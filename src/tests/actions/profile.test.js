@@ -25,7 +25,13 @@ const {
   FAILED_MESSAGE
 } = actionStatusMessages;
 const { SET_USER_PROFILE, VIEW_PROFILE } = actionTypes.profile;
-const { HAS_NOT_BEEN_FOLLOWED, USER_NOT_FOUND, UNAUTHORISED } = errorMessages;
+const {
+  CANT_BE_FOLLOWED,
+  HAS_BEEN_FOLLOWED,
+  HAS_NOT_BEEN_FOLLOWED,
+  USER_NOT_FOUND,
+  UNAUTHORISED
+} = errorMessages;
 const { AUTHORISATION_ERROR, INVALID_REQUEST } = errorTypes;
 
 const createMockStore = configureMockStore([thunk]);
@@ -251,6 +257,66 @@ describe('profile actions', () => {
             done();
           });
       });
+    });
+  });
+
+  test('should handle requests when users attempt to follow themselves', done => {
+    store.dispatch(followUser(userID, token));
+    let actions = store.getActions();
+    expect(actions[0]).toEqual({
+      type: SET_ACTION_STATUS,
+      actionStatus: IN_PROGRESS_MESSAGE,
+      actionName: 'followUser'
+    });
+
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request
+        .respondWith({ status: 404, response: CANT_BE_FOLLOWED })
+        .then(() => {
+          actions = store.getActions();
+          expect(actions[1]).toEqual({
+            type: SET_ACTION_STATUS,
+            actionStatus: FAILED_MESSAGE,
+            actionName: 'followUser'
+          });
+          expect(actions[2]).toEqual({
+            type: SET_ERROR_MESSAGE,
+            errorMessage: CANT_BE_FOLLOWED,
+            errorType: INVALID_REQUEST
+          });
+          done();
+        });
+    });
+  });
+
+  test('should handle a repeated request to follow the same user', done => {
+    store.dispatch(followUser(users[1]._id, token));
+    let actions = store.getActions();
+    expect(actions[0]).toEqual({
+      type: SET_ACTION_STATUS,
+      actionStatus: IN_PROGRESS_MESSAGE,
+      actionName: 'followUser'
+    });
+
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request
+        .respondWith({ status: 404, response: HAS_BEEN_FOLLOWED })
+        .then(() => {
+          actions = store.getActions();
+          expect(actions[1]).toEqual({
+            type: SET_ACTION_STATUS,
+            actionStatus: FAILED_MESSAGE,
+            actionName: 'followUser'
+          });
+          expect(actions[2]).toEqual({
+            type: SET_ERROR_MESSAGE,
+            errorMessage: HAS_BEEN_FOLLOWED,
+            errorType: INVALID_REQUEST
+          });
+          done();
+        });
     });
   });
 

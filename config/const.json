@@ -42,6 +42,7 @@
     "USER_NOT_FOUND": "User not found",
     "HAS_BEEN_LIKED": "User has already liked this tweet",
     "HAS_NOT_BEEN_LIKED": "User has yet to like this tweet",
+    "HAS_BEEN_RETWEETED": "Cannot retweet the same tweet more than once",
     "HAS_BEEN_FOLLOWED": "Already following user",
     "HAS_NOT_BEEN_FOLLOWED": "User is not currently being followed"
   }

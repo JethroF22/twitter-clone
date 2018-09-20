@@ -6,7 +6,16 @@ const User = require('../models/user');
 const Tweet = require('../models/tweet');
 const authenticate = require('../middleware/authenticate');
 const DBErrorParser = require('../utils/errorParser');
+const { errorMessages } = require('../../config/const.json');
 
+const {
+  HAS_BEEN_RETWEETED,
+  HAS_BEEN_LIKED,
+  HAS_NOT_BEEN_LIKED,
+  TWEET_NOT_FOUND,
+  TWEETS_NOT_FOUND,
+  USER_NOT_FOUND
+} = errorMessages;
 const router = express.Router();
 
 // GET routes
@@ -15,14 +24,14 @@ router.get('/fetch_tweets/:id', (req, res) => {
 
   User.findById(id).then(user => {
     if (!user) {
-      return res.status(404).send('User does not exist');
+      return res.status(404).send(USER_NOT_FOUND);
     }
 
     const retweets = user.retweets;
     Tweet.find({ $or: [{ 'user._id': id }, { _id: { $in: retweets } }] })
       .then(tweets => {
         if (tweets.length == 0) {
-          return res.status(404).send('User has not tweeted anything');
+          return res.status(404).send(TWEETS_NOT_FOUND);
         }
         res.send(tweets);
       })
@@ -63,7 +72,7 @@ router.patch('/retweet/:id', authenticate, (req, res) => {
     tweet => tweet._id.toHexString() === _id
   );
   if (hasBeenRetweeted) {
-    return res.status(400).send('Cannot retweet the same tweet more than once');
+    return res.status(400).send(HAS_BEEN_RETWEETED);
   }
 
   Tweet.findOneAndUpdate(
@@ -77,7 +86,7 @@ router.patch('/retweet/:id', authenticate, (req, res) => {
   )
     .then(tweet => {
       if (!tweet) {
-        return res.status(404).send('Tweet not found');
+        return res.status(404).send(TWEET_NOT_FOUND);
       }
       user.retweets.push({ _id });
       user.save().then(user => {
@@ -98,7 +107,7 @@ router.patch('/like/:id', authenticate, (req, res) => {
     tweet => tweet._id.toHexString() === id
   );
   if (hasBeenLiked) {
-    return res.status(400).send('User has already liked this tweet');
+    return res.status(400).send(HAS_BEEN_LIKED);
   }
 
   Tweet.findOneAndUpdate(
@@ -107,7 +116,7 @@ router.patch('/like/:id', authenticate, (req, res) => {
     { new: true }
   ).then(tweet => {
     if (!tweet) {
-      return res.status(404).send('Tweet does not exist');
+      return res.status(404).send(TWEET_NOT_FOUND);
     }
 
     user.likedTweets.push({ _id: id });
@@ -134,7 +143,7 @@ router.patch('/unlike/:id', authenticate, (req, res) => {
     tweet => tweet._id.toHexString() === id
   );
   if (!hasBeenLiked) {
-    return res.status(400).send('User has yet to like this tweet');
+    return res.status(400).send(HAS_NOT_BEEN_LIKED);
   }
 
   Tweet.findOneAndUpdate(
@@ -143,7 +152,7 @@ router.patch('/unlike/:id', authenticate, (req, res) => {
     { new: true }
   ).then(tweet => {
     if (!tweet) {
-      return res.status(404).send('Tweet does not exist');
+      return res.status(404).send(TWEET_NOT_FOUND);
     }
 
     user.likedTweets = user.likedTweets.filter(
@@ -168,7 +177,7 @@ router.delete('/delete/:id', authenticate, (req, res) => {
   Tweet.findOneAndRemove({ _id: id, 'user._id': req.user._id })
     .then(tweet => {
       if (!tweet) {
-        return res.status(404).send('This tweet does not exist');
+        return res.status(404).send(TWEET_NOT_FOUND);
       }
 
       User.updateMany(

@@ -1,7 +1,7 @@
 import profileReducer from '../../reducers/profile';
 
-import { userProfiles } from '../seed/seed';
-import { actionTypes } from '../../config/const.json';
+import { userProfiles } from '../../../config/seed';
+import { actionTypes } from '../../../config/const.json';
 const { SET_USER_PROFILE, VIEW_PROFILE } = actionTypes.profile;
 
 let profile;

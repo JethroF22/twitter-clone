@@ -17,8 +17,8 @@ import {
   actionStatusMessages,
   errorMessages,
   errorTypes
-} from '../../config/const.json';
-import { tweets, tweetID, users } from '../seed/seed';
+} from '../../../config/const.json';
+import { tweets, tweetID, users } from '../../../config/seed';
 
 const { SET_ACTION_STATUS } = actionTypes.status;
 const { SET_ERROR_MESSAGE } = actionTypes.error;
@@ -29,11 +29,12 @@ const {
 } = actionStatusMessages;
 const { UPDATE_USER_TWEETS, SET_USER_TWEETS } = actionTypes.tweet;
 const {
-  UNAUTHORISED,
-  TWEET_NOT_FOUND,
-  NON_EXISTENT_USER,
   HAS_BEEN_LIKED,
-  HAS_NOT_BEEN_LIKED
+  HAS_NOT_BEEN_LIKED,
+  TWEET_NOT_FOUND,
+  TWEETS_NOT_FOUND,
+  UNAUTHORISED,
+  USER_NOT_FOUND
 } = errorMessages;
 const { AUTHORISATION_ERROR, INVALID_REQUEST } = errorTypes;
 
@@ -263,7 +264,7 @@ describe('tweet actions', () => {
       moxios.wait(() => {
         const request = moxios.requests.mostRecent();
         request
-          .respondWith({ status: 404, response: NON_EXISTENT_USER })
+          .respondWith({ status: 404, response: USER_NOT_FOUND })
           .then(() => {
             actions = store.getActions();
             expect(actions[1]).toEqual({
@@ -273,7 +274,37 @@ describe('tweet actions', () => {
             });
             expect(actions[2]).toEqual({
               type: SET_ERROR_MESSAGE,
-              errorMessage: NON_EXISTENT_USER,
+              errorMessage: USER_NOT_FOUND,
+              errorType: INVALID_REQUEST
+            });
+            done();
+          });
+      });
+    });
+
+    test('should handle requests if no tweets are returned', done => {
+      store.dispatch(fetchTweets('1234567890'));
+      let actions = store.getActions();
+      expect(actions[0]).toEqual({
+        type: SET_ACTION_STATUS,
+        actionStatus: IN_PROGRESS_MESSAGE,
+        actionName: 'fetchTweets'
+      });
+
+      moxios.wait(() => {
+        const request = moxios.requests.mostRecent();
+        request
+          .respondWith({ status: 404, response: TWEETS_NOT_FOUND })
+          .then(() => {
+            actions = store.getActions();
+            expect(actions[1]).toEqual({
+              type: SET_ACTION_STATUS,
+              actionStatus: FAILED_MESSAGE,
+              actionName: 'fetchTweets'
+            });
+            expect(actions[2]).toEqual({
+              type: SET_ERROR_MESSAGE,
+              errorMessage: TWEETS_NOT_FOUND,
               errorType: INVALID_REQUEST
             });
             done();

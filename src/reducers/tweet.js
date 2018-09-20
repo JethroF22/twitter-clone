@@ -1,4 +1,4 @@
-import { actionTypes } from '../config/const.json';
+import { actionTypes } from '../../config/const.json';
 const { UPDATE_USER_TWEETS, SET_USER_TWEETS } = actionTypes.tweet;
 
 export default (state = { tweets: [] }, action) => {

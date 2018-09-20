@@ -4,7 +4,10 @@ import { registerUser } from '../../actions/auth';
 import _ from 'lodash';
 
 import { validateRegistrationForm } from '../../utils/formValidation';
-import { actionStatusMessages, errorMessages } from '../../config/const.json';
+import {
+  actionStatusMessages,
+  errorMessages
+} from '../../../config/const.json';
 
 const {
   SUCCESS_MESSAGE,

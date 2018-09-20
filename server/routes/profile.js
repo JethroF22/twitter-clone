@@ -4,7 +4,13 @@ const _ = require('lodash');
 const authenticate = require('../middleware/authenticate');
 const errorParser = require('../utils/errorParser');
 const User = require('../models/user');
+const { errorMessages } = require('../../config/const.json');
 
+const {
+  USER_NOT_FOUND,
+  HAS_BEEN_FOLLOWED,
+  HAS_NOT_BEEN_FOLLOWED
+} = errorMessages;
 const router = express.Router();
 
 // GET routes
@@ -14,7 +20,7 @@ router.get('/view/:id', (req, res) => {
   User.findById(id)
     .then(user => {
       if (!user) {
-        return res.status(404).send('User does not exist');
+        return res.status(404).send(USER_NOT_FOUND);
       }
 
       const userProfile = user.getProfileDetails();
@@ -62,7 +68,7 @@ router.patch('/follow/:id', authenticate, (req, res) => {
     following => following._id.toHexString() === id
   );
   if (hasBeenFollowed) {
-    return res.status(400).send('Already following user');
+    return res.status(400).send(HAS_BEEN_FOLLOWED);
   }
 
   User.findByIdAndUpdate(
@@ -76,7 +82,7 @@ router.patch('/follow/:id', authenticate, (req, res) => {
   )
     .then(followedUser => {
       if (!followedUser) {
-        return res.status(404).send('User does not exist');
+        return res.status(404).send(USER_NOT_FOUND);
       }
 
       const following = _.pick(followedUser, ['_id', 'photo']);
@@ -115,7 +121,7 @@ router.patch('/unfollow/:id', authenticate, (req, res) => {
     following => following._id.toHexString() === id
   );
   if (!hasBeenFollowed) {
-    return res.status(400).send('User is not currently being followed');
+    return res.status(400).send(HAS_NOT_BEEN_FOLLOWED);
   }
 
   User.findByIdAndUpdate(

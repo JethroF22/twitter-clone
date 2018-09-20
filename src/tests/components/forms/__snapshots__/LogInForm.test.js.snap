@@ -17,7 +17,7 @@ exports[`LogInForm should render correctly 1`] = `
       name="email"
       onChange={[Function]}
       type="email"
-      value="neillg@gmail.com"
+      value="nariroh@gmail.com"
     />
     <br />
     <label
@@ -29,7 +29,7 @@ exports[`LogInForm should render correctly 1`] = `
       name="password"
       onChange={[Function]}
       type="password"
-      value="iamneill"
+      value="password2"
     />
     <br />
     <button

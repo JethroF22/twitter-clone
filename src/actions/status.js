@@ -1,4 +1,4 @@
-import { actionTypes } from '../config/const.json';
+import { actionTypes } from '../../config/const.json';
 
 const { SET_ACTION_STATUS } = actionTypes.status;
 

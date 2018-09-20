@@ -1,6 +1,6 @@
 import authReducer from '../../reducers/auth';
 
-import { actionTypes } from '../../config/const.json';
+import { actionTypes } from '../../../config/const.json';
 const { SET_USER_DETAILS, SET_TOKEN } = actionTypes.auth;
 
 test('should set the user details', () => {

@@ -1,6 +1,6 @@
 import statusReducer from '../../reducers/status';
 
-import { actionTypes } from '../../config/const.json';
+import { actionTypes } from '../../../config/const.json';
 const { SET_ACTION_STATUS } = actionTypes.status;
 
 test('should set the action name and status', () => {

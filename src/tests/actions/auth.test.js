@@ -8,13 +8,13 @@ import {
   setToken,
   logIn
 } from '../../actions/auth';
-import { users } from '../seed/seed';
 import {
   actionTypes,
   actionStatusMessages,
   errorMessages,
   errorTypes
-} from '../../config/const.json';
+} from '../../../config/const.json';
+import { users } from '../../../config/seed';
 
 const { SET_USER_DETAILS, SET_TOKEN } = actionTypes.auth;
 const { SET_ACTION_STATUS } = actionTypes.status;

@@ -1,8 +1,16 @@
+const env = process.env.NODE_ENV || 'development';
+
+if (env === 'development') {
+  require('dotenv').config();
+} else if (env === 'test') {
+  require('dotenv').config({ path: './.env.test' });
+}
+
 const { ObjectID } = require('mongodb');
 const jwt = require('jsonwebtoken');
 
-const User = require('../../models/user');
-const Tweet = require('../../models/tweet');
+const User = require('../server/models/user');
+const Tweet = require('../server/models/tweet');
 
 const userOneID = new ObjectID().toHexString();
 const userTwoID = new ObjectID().toHexString();

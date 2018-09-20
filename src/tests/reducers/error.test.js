@@ -1,6 +1,6 @@
 import errorReducer from '../../reducers/error';
 
-import { actionTypes } from '../../config/const.json';
+import { actionTypes } from '../../../config/const.json';
 const { SET_ERROR_MESSAGE } = actionTypes.error;
 
 test('should set the error type and message', () => {

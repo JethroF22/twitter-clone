@@ -7,7 +7,7 @@ import {
   actionTypes,
   errorMessages,
   errorTypes
-} from '../config/const.json';
+} from '../../config/const.json';
 
 const { SET_USER_PROFILE, VIEW_PROFILE } = actionTypes.profile;
 const {
@@ -15,7 +15,13 @@ const {
   IN_PROGRESS_MESSAGE,
   SUCCESS_MESSAGE
 } = actionStatusMessages;
-const { NON_EXISTENT_USER, UNKNOWN_ERROR, UNAUTHORISED } = errorMessages;
+const {
+  USER_NOT_FOUND,
+  UNKNOWN_ERROR,
+  UNAUTHORISED,
+  HAS_BEEN_FOLLOWED,
+  HAS_NOT_BEEN_FOLLOWED
+} = errorMessages;
 const { AUTHORISATION_ERROR, DB_ERROR, INVALID_REQUEST } = errorTypes;
 
 const apiUrl = process.env.API_URL || '';
@@ -63,11 +69,11 @@ export const getUserProfile = (id, currentUser) => {
             actionName: 'getUserProfile'
           })
         );
-        if (err.response.data && err.response.data == NON_EXISTENT_USER) {
+        if (err.response.data && err.response.data == USER_NOT_FOUND) {
           dispatch(
             setError({
               errorType: INVALID_REQUEST,
-              errorMessage: NON_EXISTENT_USER
+              errorMessage: USER_NOT_FOUND
             })
           );
         } else {
@@ -120,11 +126,11 @@ export const followUser = (id, token) => {
           })
         );
         if (err.response) {
-          if (err.response.data == NON_EXISTENT_USER) {
+          if (err.response.data == USER_NOT_FOUND) {
             dispatch(
               setError({
                 errorType: INVALID_REQUEST,
-                errorMessage: NON_EXISTENT_USER
+                errorMessage: USER_NOT_FOUND
               })
             );
           } else if (err.response.statusText == UNAUTHORISED) {

@@ -1,5 +1,5 @@
 import { setActionStatus } from '../../actions/status';
-import { actionTypes, actionStatusMessages } from '../../config/const.json';
+import { actionTypes, actionStatusMessages } from '../../../config/const.json';
 
 const { SET_ACTION_STATUS } = actionTypes.status;
 const { SUCCESS_MESSAGE } = actionStatusMessages;

@@ -3,7 +3,14 @@ const { expect } = require('chai');
 const { ObjectID } = require('mongodb');
 
 const app = require('../server');
-const { populateUsers, users, userProfiles } = require('./seed/seed');
+const { populateUsers, users, userProfiles } = require('../../config/seed');
+const { errorMessages } = require('../../config/const.json');
+
+const {
+  USER_NOT_FOUND,
+  HAS_BEEN_FOLLOWED,
+  HAS_NOT_BEEN_FOLLOWED
+} = errorMessages;
 
 let user, id, profile;
 
@@ -36,7 +43,7 @@ describe('/profile', () => {
           .get(`/profile/view/${id}`)
           .expect(404)
           .expect(res => {
-            expect(res.error.text).to.equal('User does not exist');
+            expect(res.error.text).to.equal(USER_NOT_FOUND);
           })
           .end(done);
       });
@@ -128,7 +135,7 @@ describe('/profile', () => {
           .set('x-token', user.token)
           .expect(404)
           .expect(res => {
-            expect(res.error.text).to.equal('User does not exist');
+            expect(res.error.text).to.equal(USER_NOT_FOUND);
           })
           .end(done);
       });
@@ -154,7 +161,7 @@ describe('/profile', () => {
           .set('x-token', user.token)
           .expect(400)
           .expect(res => {
-            expect(res.error.text).to.equal('Already following user');
+            expect(res.error.text).to.equal(HAS_BEEN_FOLLOWED);
           })
           .end(done);
       });
@@ -202,9 +209,7 @@ describe('/profile', () => {
           .set('x-token', user.token)
           .expect(400)
           .expect(res => {
-            expect(res.error.text).to.equal(
-              'User is not currently being followed'
-            );
+            expect(res.error.text).to.equal(HAS_NOT_BEEN_FOLLOWED);
           })
           .end(done);
       });

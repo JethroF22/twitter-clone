@@ -38,6 +38,7 @@
     "INVALID_CREDENTIALS": "Invalid email/password combination",
     "UNAUTHORISED": "Unauthorised",
     "TWEET_NOT_FOUND": "Tweet not found",
+    "TWEETS_NOT_FOUND": "User has yet to tweet anything",
     "USER_NOT_FOUND": "User not found",
     "HAS_BEEN_LIKED": "User has already liked this tweet",
     "HAS_NOT_BEEN_LIKED": "User has yet to like this tweet",

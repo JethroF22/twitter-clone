@@ -7,7 +7,7 @@ import {
   errorTypes,
   errorMessages,
   actionTypes
-} from '../config/const.json';
+} from '../../config/const.json';
 
 const { SET_USER_DETAILS, SET_TOKEN } = actionTypes.auth;
 const {

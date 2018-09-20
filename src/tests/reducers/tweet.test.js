@@ -1,6 +1,6 @@
 import tweetReducer from '../../reducers/tweet';
 
-import { actionTypes } from '../../config/const.json';
+import { actionTypes } from '../../../config/const.json';
 import { tweets } from '../../../config/seed';
 const { UPDATE_USER_TWEETS, SET_USER_TWEETS } = actionTypes.tweet;
 

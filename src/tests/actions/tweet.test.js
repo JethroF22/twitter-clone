@@ -17,7 +17,7 @@ import {
   actionStatusMessages,
   errorMessages,
   errorTypes
-} from '../../config/const.json';
+} from '../../../config/const.json';
 import { tweets, tweetID, users } from '../../../config/seed';
 
 const { SET_ACTION_STATUS } = actionTypes.status;
@@ -31,7 +31,7 @@ const { UPDATE_USER_TWEETS, SET_USER_TWEETS } = actionTypes.tweet;
 const {
   UNAUTHORISED,
   TWEET_NOT_FOUND,
-  NON_EXISTENT_USER,
+  USER_NOT_FOUND,
   HAS_BEEN_LIKED,
   HAS_NOT_BEEN_LIKED
 } = errorMessages;
@@ -263,7 +263,7 @@ describe('tweet actions', () => {
       moxios.wait(() => {
         const request = moxios.requests.mostRecent();
         request
-          .respondWith({ status: 404, response: NON_EXISTENT_USER })
+          .respondWith({ status: 404, response: USER_NOT_FOUND })
           .then(() => {
             actions = store.getActions();
             expect(actions[1]).toEqual({
@@ -273,7 +273,7 @@ describe('tweet actions', () => {
             });
             expect(actions[2]).toEqual({
               type: SET_ERROR_MESSAGE,
-              errorMessage: NON_EXISTENT_USER,
+              errorMessage: USER_NOT_FOUND,
               errorType: INVALID_REQUEST
             });
             done();

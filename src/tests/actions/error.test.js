@@ -3,7 +3,7 @@ import {
   actionTypes,
   errorTypes,
   errorMessages
-} from '../../config/const.json';
+} from '../../../config/const.json';
 
 const { SET_ERROR_MESSAGE } = actionTypes.error;
 const { UNKNOWN_ERROR } = errorMessages;

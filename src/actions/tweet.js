@@ -7,7 +7,7 @@ import {
   errorTypes,
   errorMessages,
   actionTypes
-} from '../config/const.json';
+} from '../../config/const.json';
 
 const { UPDATE_USER_TWEETS, SET_USER_TWEETS } = actionTypes.tweet;
 const {
@@ -19,7 +19,7 @@ const {
   UNKNOWN_ERROR,
   UNAUTHORISED,
   TWEET_NOT_FOUND,
-  NON_EXISTENT_USER,
+  USER_NOT_FOUND,
   HAS_BEEN_LIKED,
   HAS_NOT_BEEN_LIKED
 } = errorMessages;
@@ -175,11 +175,11 @@ export const fetchTweets = id => {
             actionName: 'fetchTweets'
           })
         );
-        if (err.response.data && err.response.data == NON_EXISTENT_USER) {
+        if (err.response.data && err.response.data == USER_NOT_FOUND) {
           dispatch(
             setError({
               errorType: INVALID_REQUEST,
-              errorMessage: NON_EXISTENT_USER
+              errorMessage: USER_NOT_FOUND
             })
           );
         } else {

@@ -13,7 +13,7 @@ import {
   actionStatusMessages,
   errorMessages,
   errorTypes
-} from '../../config/const.json';
+} from '../../../config/const.json';
 import { userProfiles, users } from '../../../config/seed';
 
 const { SET_ACTION_STATUS } = actionTypes.status;
@@ -24,7 +24,7 @@ const {
   FAILED_MESSAGE
 } = actionStatusMessages;
 const { SET_USER_PROFILE, VIEW_PROFILE } = actionTypes.profile;
-const { NON_EXISTENT_USER, UNAUTHORISED } = errorMessages;
+const { USER_NOT_FOUND, UNAUTHORISED } = errorMessages;
 const { AUTHORISATION_ERROR, INVALID_REQUEST } = errorTypes;
 
 const createMockStore = configureMockStore([thunk]);
@@ -130,7 +130,7 @@ describe('profile actions', () => {
       moxios.wait(() => {
         const request = moxios.requests.mostRecent();
         request
-          .respondWith({ status: 404, response: NON_EXISTENT_USER })
+          .respondWith({ status: 404, response: USER_NOT_FOUND })
           .then(() => {
             actions = store.getActions();
             expect(actions[1]).toEqual({
@@ -140,7 +140,7 @@ describe('profile actions', () => {
             });
             expect(actions[2]).toEqual({
               type: SET_ERROR_MESSAGE,
-              errorMessage: NON_EXISTENT_USER,
+              errorMessage: USER_NOT_FOUND,
               errorType: INVALID_REQUEST
             });
             done();
@@ -203,7 +203,7 @@ describe('profile actions', () => {
       moxios.wait(() => {
         const request = moxios.requests.mostRecent();
         request
-          .respondWith({ status: 404, response: NON_EXISTENT_USER })
+          .respondWith({ status: 404, response: USER_NOT_FOUND })
           .then(() => {
             actions = store.getActions();
             expect(actions[1]).toEqual({
@@ -213,7 +213,7 @@ describe('profile actions', () => {
             });
             expect(actions[2]).toEqual({
               type: SET_ERROR_MESSAGE,
-              errorMessage: NON_EXISTENT_USER,
+              errorMessage: USER_NOT_FOUND,
               errorType: INVALID_REQUEST
             });
             done();

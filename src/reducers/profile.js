@@ -1,4 +1,4 @@
-import { actionTypes } from '../config/const.json';
+import { actionTypes } from '../../config/const.json';
 const { SET_USER_PROFILE, VIEW_PROFILE } = actionTypes.profile;
 
 export default (state = {}, action) => {

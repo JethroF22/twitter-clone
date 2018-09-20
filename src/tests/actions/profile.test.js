@@ -24,7 +24,7 @@ const {
   FAILED_MESSAGE
 } = actionStatusMessages;
 const { SET_USER_PROFILE, VIEW_PROFILE } = actionTypes.profile;
-const { USER_NOT_FOUND, UNAUTHORISED } = errorMessages;
+const { HAS_NOT_BEEN_FOLLOWED, USER_NOT_FOUND, UNAUTHORISED } = errorMessages;
 const { AUTHORISATION_ERROR, INVALID_REQUEST } = errorTypes;
 
 const createMockStore = configureMockStore([thunk]);
@@ -246,6 +246,138 @@ describe('profile actions', () => {
               type: SET_ERROR_MESSAGE,
               errorMessage: UNAUTHORISED,
               errorType: AUTHORISATION_ERROR
+            });
+            done();
+          });
+      });
+    });
+  });
+
+  describe('unfollowUser', () => {
+    test('should handle successful requests', done => {
+      followedUser = users[1];
+      store.dispatch(unfollowUser(followedUser._id, token));
+      let actions = store.getActions();
+      expect(actions[0]).toEqual({
+        type: SET_ACTION_STATUS,
+        actionStatus: IN_PROGRESS_MESSAGE,
+        actionName: 'unfollowUser'
+      });
+
+      moxios.wait(() => {
+        const request = moxios.requests.mostRecent();
+        request
+          .respondWith({ status: 200, response: { followedUser, user } })
+          .then(() => {
+            actions = store.getActions();
+            expect(actions[1]).toEqual({
+              type: SET_ACTION_STATUS,
+              actionStatus: SUCCESS_MESSAGE,
+              actionName: 'unfollowUser'
+            });
+            expect(actions[2]).toEqual({
+              type: SET_USER_PROFILE,
+              userProfile: user
+            });
+            expect(actions[3]).toEqual({
+              type: VIEW_PROFILE,
+              profile: followedUser
+            });
+            done();
+          });
+      });
+    });
+
+    test('should handle requests with invalid ids', done => {
+      id = '1234567890';
+      store.dispatch(unfollowUser(id, token));
+      let actions = store.getActions();
+      expect(actions[0]).toEqual({
+        type: SET_ACTION_STATUS,
+        actionStatus: IN_PROGRESS_MESSAGE,
+        actionName: 'unfollowUser'
+      });
+
+      moxios.wait(() => {
+        const request = moxios.requests.mostRecent();
+        request
+          .respondWith({ status: 404, response: USER_NOT_FOUND })
+          .then(() => {
+            actions = store.getActions();
+            expect(actions[1]).toEqual({
+              type: SET_ACTION_STATUS,
+              actionStatus: FAILED_MESSAGE,
+              actionName: 'unfollowUser'
+            });
+            expect(actions[2]).toEqual({
+              type: SET_ERROR_MESSAGE,
+              errorMessage: USER_NOT_FOUND,
+              errorType: INVALID_REQUEST
+            });
+            done();
+          });
+      });
+    });
+
+    test('should handle unauthorised requests', done => {
+      followedUser = users[1];
+      store.dispatch(unfollowUser(followedUser._id));
+      let actions = store.getActions();
+      expect(actions[0]).toEqual({
+        type: SET_ACTION_STATUS,
+        actionStatus: IN_PROGRESS_MESSAGE,
+        actionName: 'unfollowUser'
+      });
+
+      moxios.wait(() => {
+        const request = moxios.requests.mostRecent();
+        request
+          .respondWith({ status: 401, statusText: UNAUTHORISED })
+          .then(() => {
+            actions = store.getActions();
+            expect(actions[1]).toEqual({
+              type: SET_ACTION_STATUS,
+              actionStatus: FAILED_MESSAGE,
+              actionName: 'unfollowUser'
+            });
+            expect(actions[2]).toEqual({
+              type: SET_ERROR_MESSAGE,
+              errorMessage: UNAUTHORISED,
+              errorType: AUTHORISATION_ERROR
+            });
+            done();
+          });
+      });
+    });
+
+    test("should handle attempts to unfollow a user that isn't being followed", done => {
+      followedUser = users[1];
+      store.dispatch(unfollowUser(followedUser._id));
+      let actions = store.getActions();
+      expect(actions[0]).toEqual({
+        type: SET_ACTION_STATUS,
+        actionStatus: IN_PROGRESS_MESSAGE,
+        actionName: 'unfollowUser'
+      });
+
+      moxios.wait(() => {
+        const request = moxios.requests.mostRecent();
+        request
+          .respondWith({
+            status: 400,
+            response: HAS_NOT_BEEN_FOLLOWED
+          })
+          .then(() => {
+            actions = store.getActions();
+            expect(actions[1]).toEqual({
+              type: SET_ACTION_STATUS,
+              actionStatus: FAILED_MESSAGE,
+              actionName: 'unfollowUser'
+            });
+            expect(actions[2]).toEqual({
+              type: SET_ERROR_MESSAGE,
+              errorMessage: HAS_NOT_BEEN_FOLLOWED,
+              errorType: INVALID_REQUEST
             });
             done();
           });

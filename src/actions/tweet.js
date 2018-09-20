@@ -16,12 +16,13 @@ const {
   FAILED_MESSAGE
 } = actionStatusMessages;
 const {
+  HAS_BEEN_LIKED,
+  HAS_NOT_BEEN_LIKED,
+  TWEET_NOT_FOUND,
+  TWEETS_NOT_FOUND,
   UNKNOWN_ERROR,
   UNAUTHORISED,
-  TWEET_NOT_FOUND,
-  USER_NOT_FOUND,
-  HAS_BEEN_LIKED,
-  HAS_NOT_BEEN_LIKED
+  USER_NOT_FOUND
 } = errorMessages;
 const { DB_ERROR, AUTHORISATION_ERROR, INVALID_REQUEST } = errorTypes;
 
@@ -175,13 +176,22 @@ export const fetchTweets = id => {
             actionName: 'fetchTweets'
           })
         );
-        if (err.response.data && err.response.data == USER_NOT_FOUND) {
-          dispatch(
-            setError({
-              errorType: INVALID_REQUEST,
-              errorMessage: USER_NOT_FOUND
-            })
-          );
+        if (err.response.data) {
+          if (err.response.data == USER_NOT_FOUND) {
+            dispatch(
+              setError({
+                errorType: INVALID_REQUEST,
+                errorMessage: USER_NOT_FOUND
+              })
+            );
+          } else if (err.response.data == TWEETS_NOT_FOUND) {
+            dispatch(
+              setError({
+                errorType: INVALID_REQUEST,
+                errorMessage: TWEETS_NOT_FOUND
+              })
+            );
+          }
         } else {
           dispatch(
             setError({

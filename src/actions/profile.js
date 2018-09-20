@@ -16,11 +16,12 @@ const {
   SUCCESS_MESSAGE
 } = actionStatusMessages;
 const {
-  USER_NOT_FOUND,
+  CANT_BE_FOLLOWED,
+  HAS_BEEN_FOLLOWED,
+  HAS_NOT_BEEN_FOLLOWED,
   UNKNOWN_ERROR,
   UNAUTHORISED,
-  HAS_BEEN_FOLLOWED,
-  HAS_NOT_BEEN_FOLLOWED
+  USER_NOT_FOUND
 } = errorMessages;
 const { AUTHORISATION_ERROR, DB_ERROR, INVALID_REQUEST } = errorTypes;
 
@@ -138,6 +139,20 @@ export const followUser = (id, token) => {
               setError({
                 errorType: AUTHORISATION_ERROR,
                 errorMessage: UNAUTHORISED
+              })
+            );
+          } else if (err.response.data == HAS_BEEN_FOLLOWED) {
+            dispatch(
+              setError({
+                errorType: INVALID_REQUEST,
+                errorMessage: HAS_BEEN_FOLLOWED
+              })
+            );
+          } else if (err.response.data == CANT_BE_FOLLOWED) {
+            dispatch(
+              setError({
+                errorType: INVALID_REQUEST,
+                errorMessage: CANT_BE_FOLLOWED
               })
             );
           }

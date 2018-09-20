@@ -7,9 +7,10 @@ const User = require('../models/user');
 const { errorMessages } = require('../../config/const.json');
 
 const {
-  USER_NOT_FOUND,
+  CANT_BE_FOLLOWED,
   HAS_BEEN_FOLLOWED,
-  HAS_NOT_BEEN_FOLLOWED
+  HAS_NOT_BEEN_FOLLOWED,
+  USER_NOT_FOUND
 } = errorMessages;
 const router = express.Router();
 
@@ -56,6 +57,11 @@ router.patch('/edit', authenticate, (req, res) => {
 router.patch('/follow/:id', authenticate, (req, res) => {
   const id = req.params.id;
   const user = req.user;
+
+  if (id === user._id.toHexString()) {
+    return res.status(400).send(CANT_BE_FOLLOWED);
+  }
+
   const follower = {
     _id: user._id,
     user: {

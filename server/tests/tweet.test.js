@@ -11,6 +11,16 @@ const {
   populateTweets,
   populateUsers
 } = require('../../config/seed');
+const { errorMessages } = require('../../config/const.json');
+
+const {
+  HAS_BEEN_RETWEETED,
+  HAS_BEEN_LIKED,
+  HAS_NOT_BEEN_LIKED,
+  TWEET_NOT_FOUND,
+  TWEETS_NOT_FOUND,
+  USER_NOT_FOUND
+} = errorMessages;
 
 let tweet, id, token, user;
 
@@ -46,7 +56,7 @@ describe('/tweet', () => {
           .get(`/tweet/fetch_tweets/${id}`)
           .expect(404)
           .expect(res => {
-            expect(res.error.text).to.equal('User does not exist');
+            expect(res.error.text).to.equal(USER_NOT_FOUND);
           })
           .end(done);
       });
@@ -59,7 +69,7 @@ describe('/tweet', () => {
           .get(`/tweet/fetch_tweets/${id}`)
           .expect(404)
           .expect(res => {
-            expect(res.error.text).to.equal('User has not tweeted anything');
+            expect(res.error.text).to.equal(TWEETS_NOT_FOUND);
           })
           .end(done);
       });
@@ -142,9 +152,7 @@ describe('/tweet', () => {
           .set('x-token', token)
           .expect(400)
           .expect(res => {
-            expect(res.error.text).to.equal(
-              'Cannot retweet the same tweet more than once'
-            );
+            expect(res.error.text).to.equal(HAS_BEEN_RETWEETED);
           })
           .end(done);
       });
@@ -157,7 +165,7 @@ describe('/tweet', () => {
           .set('x-token', token)
           .expect(404)
           .expect(res => {
-            expect(res.error.text).to.equal('Tweet not found');
+            expect(res.error.text).to.equal(TWEET_NOT_FOUND);
           })
           .end(done);
       });
@@ -204,7 +212,7 @@ describe('/tweet', () => {
           .set('x-token', token)
           .expect(404)
           .expect(res => {
-            expect(res.error.text).to.equal('Tweet does not exist');
+            expect(res.error.text).to.equal(TWEET_NOT_FOUND);
           })
           .end(done);
       });
@@ -219,9 +227,7 @@ describe('/tweet', () => {
           .set('x-token', token)
           .expect(400)
           .expect(res => {
-            expect(res.error.text).to.equal(
-              'User has already liked this tweet'
-            );
+            expect(res.error.text).to.equal(HAS_BEEN_LIKED);
           })
           .end(done);
       });
@@ -254,7 +260,7 @@ describe('/tweet', () => {
           .set('x-token', token)
           .expect(404)
           .expect(res => {
-            expect(res.error.text).to.equal('Tweet does not exist');
+            expect(res.error.text).to.equal(TWEET_NOT_FOUND);
           })
           .end(done);
       });
@@ -269,7 +275,7 @@ describe('/tweet', () => {
           .set('x-token', token)
           .expect(400)
           .expect(res => {
-            expect(res.error.text).to.equal('User has yet to like this tweet');
+            expect(res.error.text).to.equal(HAS_NOT_BEEN_LIKED);
           })
           .end(done);
       });
@@ -312,7 +318,7 @@ describe('/tweet', () => {
           .set('x-token', token)
           .expect(404)
           .expect(res => {
-            expect(res.error.text).to.equal('This tweet does not exist');
+            expect(res.error.text).to.equal(TWEET_NOT_FOUND);
           })
           .end(done);
       });
@@ -326,7 +332,7 @@ describe('/tweet', () => {
           .set('x-token', token)
           .expect(404)
           .expect(res => {
-            expect(res.error.text).to.equal('This tweet does not exist');
+            expect(res.error.text).to.equal(TWEET_NOT_FOUND);
           })
           .end(done);
       });

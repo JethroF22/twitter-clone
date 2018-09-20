@@ -4,6 +4,9 @@ const { expect } = require('chai');
 const app = require('../server');
 const User = require('../models/user');
 const { populateUsers, users } = require('../../config/seed');
+const { errorMessages } = require('../../config/const.json');
+
+const { DUPLICATE_EMAIL, INVALID_CREDENTIALS } = errorMessages;
 
 describe('/auth', () => {
   let user;
@@ -77,7 +80,7 @@ describe('/auth', () => {
         .send(user)
         .expect(400)
         .expect(res => {
-          expect(res.body[0].msg).to.equal('Duplicate email');
+          expect(res.body[0].msg).to.equal(DUPLICATE_EMAIL);
         })
         .end(done);
     });
@@ -110,7 +113,7 @@ describe('/auth', () => {
         .send(user)
         .expect(400)
         .expect(res => {
-          expect(res.body.msg).to.equal('Invalid email/password combination');
+          expect(res.body.msg).to.equal(INVALID_CREDENTIALS);
         })
         .end(done);
     });

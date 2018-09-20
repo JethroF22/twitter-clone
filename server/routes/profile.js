@@ -44,7 +44,8 @@ router.patch('/edit', authenticate, (req, res) => {
     { new: true, runValidators: true }
   )
     .then(user => {
-      res.send(user);
+      const userProfile = user.getProfileDetails();
+      res.send(userProfile);
     })
     .catch(err => {
       const errors = errorParser(err);

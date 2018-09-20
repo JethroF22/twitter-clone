@@ -3,6 +3,7 @@ import thunk from 'redux-thunk';
 import moxios from 'moxios';
 
 import {
+  editProfile,
   followUser,
   getUserProfile,
   setUserProfile,
@@ -36,7 +37,7 @@ describe('profile actions', () => {
     user = users[0];
     profile = { ...userProfiles[0], name: user.name };
     userID = user._id;
-    token = '1234567890';
+    token = user.token;
     id = 'notavalidid';
     moxios.install();
   });
@@ -378,6 +379,66 @@ describe('profile actions', () => {
               type: SET_ERROR_MESSAGE,
               errorMessage: HAS_NOT_BEEN_FOLLOWED,
               errorType: INVALID_REQUEST
+            });
+            done();
+          });
+      });
+    });
+  });
+
+  describe('editProfile', () => {
+    test('should handle successful requests', done => {
+      store.dispatch(editProfile(token, { ...userProfiles[1] }));
+      let actions = store.getActions();
+      expect(actions[0]).toEqual({
+        type: SET_ACTION_STATUS,
+        actionStatus: IN_PROGRESS_MESSAGE,
+        actionName: 'editProfile'
+      });
+
+      moxios.wait(() => {
+        const request = moxios.requests.mostRecent();
+        request.respondWith({ status: 200, response: profile }).then(() => {
+          actions = store.getActions();
+          expect(actions[1]).toEqual({
+            type: SET_ACTION_STATUS,
+            actionStatus: SUCCESS_MESSAGE,
+            actionName: 'editProfile'
+          });
+          expect(actions[2]).toEqual({
+            type: SET_USER_PROFILE,
+            userProfile: profile
+          });
+          done();
+        });
+      });
+    });
+
+    test('should handle unauthorised requests', done => {
+      followedUser = users[1];
+      store.dispatch(editProfile());
+      let actions = store.getActions();
+      expect(actions[0]).toEqual({
+        type: SET_ACTION_STATUS,
+        actionStatus: IN_PROGRESS_MESSAGE,
+        actionName: 'editProfile'
+      });
+
+      moxios.wait(() => {
+        const request = moxios.requests.mostRecent();
+        request
+          .respondWith({ status: 401, statusText: UNAUTHORISED })
+          .then(() => {
+            actions = store.getActions();
+            expect(actions[1]).toEqual({
+              type: SET_ACTION_STATUS,
+              actionStatus: FAILED_MESSAGE,
+              actionName: 'editProfile'
+            });
+            expect(actions[2]).toEqual({
+              type: SET_ERROR_MESSAGE,
+              errorMessage: UNAUTHORISED,
+              errorType: AUTHORISATION_ERROR
             });
             done();
           });

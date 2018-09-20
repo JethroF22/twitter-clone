@@ -224,3 +224,56 @@ export const unfollowUser = (id, token) => {
       });
   };
 };
+
+export const editProfile = (token, updates) => {
+  return dispatch => {
+    const url = `${apiUrl}/profile/edit/`;
+    dispatch(
+      setActionStatus({
+        actionStatus: IN_PROGRESS_MESSAGE,
+        actionName: 'editProfile'
+      })
+    );
+    return axios({
+      method: 'patch',
+      url,
+      data: updates,
+      headers: { 'x-token': token }
+    })
+      .then(res => {
+        const userProfile = res.data;
+
+        dispatch(
+          setActionStatus({
+            actionStatus: SUCCESS_MESSAGE,
+            actionName: 'editProfile'
+          })
+        );
+
+        dispatch(setUserProfile(userProfile));
+      })
+      .catch(err => {
+        dispatch(
+          setActionStatus({
+            actionStatus: FAILED_MESSAGE,
+            actionName: 'editProfile'
+          })
+        );
+        if (err.response && err.response.statusText == UNAUTHORISED) {
+          dispatch(
+            setError({
+              errorType: AUTHORISATION_ERROR,
+              errorMessage: UNAUTHORISED
+            })
+          );
+        } else {
+          dispatch(
+            setError({
+              errorType: DB_ERROR,
+              errorMessage: UNKNOWN_ERROR
+            })
+          );
+        }
+      });
+  };
+};

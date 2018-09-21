@@ -187,7 +187,8 @@ UserSchema.methods.toJSON = function() {
     'following',
     'messages',
     'notifications',
-    'likedTweets'
+    'likedTweets',
+    '_id'
   ]);
 };
 

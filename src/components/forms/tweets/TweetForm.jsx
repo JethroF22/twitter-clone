@@ -1,7 +1,16 @@
 import React, { Component } from 'react';
 import Textarea from 'react-textarea-autosize';
+import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
+
+import { createTweet } from '../../../actions/tweet';
+import {
+  actionStatusMessages,
+  errorMessages
+} from '../../../../config/const.json';
+
+const { SUCCESS_MESSAGE } = actionStatusMessages;
 
 class TweetForm extends Component {
   state = {
@@ -13,6 +22,19 @@ class TweetForm extends Component {
     this.setState(() => ({
       body: value
     }));
+  };
+
+  onSubmit = e => {
+    const tweet = this.state.body;
+
+    this.props.createTweet(tweet, this.props.token).then(() => {
+      if (this.props.actionStatus === SUCCESS_MESSAGE) {
+        this.setState(() => ({
+          body: ''
+        }));
+        alert('Tweet created');
+      }
+    });
   };
 
   render() {
@@ -39,4 +61,17 @@ class TweetForm extends Component {
   }
 }
 
-export default TweetForm;
+const mapStateToProps = state => ({
+  actionStatus: state.status.actionStatus,
+  token: state.auth.token,
+  photo: state.profile.userProfile.photo
+});
+
+const mapDispatchToProps = dispatch => ({
+  createTweet: (tweet, token) => dispatch(createTweet(tweet, token))
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(TweetForm);

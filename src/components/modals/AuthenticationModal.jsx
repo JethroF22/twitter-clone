@@ -1,8 +1,8 @@
 import React from 'react';
 import Modal from 'react-modal';
 
-import RegistrationForm from '../forms/RegistrationForm';
-import LogInForm from '../forms/LogInForm';
+import RegistrationForm from '../forms/auth/RegistrationForm';
+import LogInForm from '../forms/auth/LogInForm';
 
 const AuthenticationModal = props => (
   <Modal

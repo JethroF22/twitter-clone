@@ -25,7 +25,8 @@ class TweetForm extends Component {
   };
 
   onSubmit = e => {
-    const tweet = this.state.body;
+    e.preventDefault();
+    const tweet = { body: this.state.body };
 
     this.props.createTweet(tweet, this.props.token).then(() => {
       if (this.props.actionStatus === SUCCESS_MESSAGE) {

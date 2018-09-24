@@ -49,7 +49,8 @@ router.post('/create', authenticate, (req, res) => {
   tweet.timestamp = new Date();
   tweet.user = {
     name: user.name,
-    _id: user._id
+    _id: user._id,
+    handle: user.handle
   };
 
   new Tweet(tweet)

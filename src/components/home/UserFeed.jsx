@@ -12,7 +12,7 @@ const UserFeed = props => (
 );
 
 const mapStateToProps = state => ({
-  id: state.auth._id || '5b9bfefc90c2a23304450b6d'
+  id: state.auth._id
 });
 
 export default connect(mapStateToProps)(UserFeed);

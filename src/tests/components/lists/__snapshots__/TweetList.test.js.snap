@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TweetList should render correctly 1`] = `
+<div>
+  <Tweet
+    key="52054.75047841195"
+    tweet="This is a test"
+  />
+  <Tweet
+    key="41946.16570024396"
+    tweet="Tres tristes tigres tragaban trigo en tres tristes trastos"
+  />
+</div>
+`;

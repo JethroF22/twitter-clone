@@ -50,18 +50,18 @@ export const getUserProfile = (id, currentUser) => {
       .then(res => {
         const userProfile = res.data;
 
+        if (userProfile.name === currentUser) {
+          dispatch(setUserProfile(userProfile));
+        } else {
+          dispatch(viewUserProfile(userProfile));
+        }
+
         dispatch(
           setActionStatus({
             actionStatus: SUCCESS_MESSAGE,
             actionName: 'getUserProfile'
           })
         );
-
-        if (userProfile.name === currentUser) {
-          dispatch(setUserProfile(userProfile));
-        } else {
-          dispatch(viewUserProfile(userProfile));
-        }
       })
       .catch(err => {
         dispatch(

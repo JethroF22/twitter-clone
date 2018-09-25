@@ -79,13 +79,13 @@ describe('profile actions', () => {
           .then(() => {
             actions = store.getActions();
             expect(actions[1]).toEqual({
+              type: SET_USER_PROFILE,
+              userProfile: profile
+            });
+            expect(actions[2]).toEqual({
               type: SET_ACTION_STATUS,
               actionStatus: SUCCESS_MESSAGE,
               actionName: 'getUserProfile'
-            });
-            expect(actions[2]).toEqual({
-              type: SET_USER_PROFILE,
-              userProfile: profile
             });
             done();
           });
@@ -112,13 +112,13 @@ describe('profile actions', () => {
           .then(() => {
             actions = store.getActions();
             expect(actions[1]).toEqual({
+              type: VIEW_PROFILE,
+              profile: viewedProfile
+            });
+            expect(actions[2]).toEqual({
               type: SET_ACTION_STATUS,
               actionStatus: SUCCESS_MESSAGE,
               actionName: 'getUserProfile'
-            });
-            expect(actions[2]).toEqual({
-              type: VIEW_PROFILE,
-              profile: viewedProfile
             });
             done();
           });

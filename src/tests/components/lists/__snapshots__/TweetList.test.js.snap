@@ -3,11 +3,11 @@
 exports[`TweetList should render correctly 1`] = `
 <div>
   <Tweet
-    key="52054.75047841195"
+    key="12274.845031177298"
     tweet="This is a test"
   />
   <Tweet
-    key="41946.16570024396"
+    key="53483.83999100447"
     tweet="Tres tristes tigres tragaban trigo en tres tristes trastos"
   />
 </div>

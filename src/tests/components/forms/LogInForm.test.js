@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import _ from 'lodash';
 
-import { LogInForm } from '../../../components/forms/LogInForm';
+import { LogInForm } from '../../../components/forms/auth/LogInForm';
 import { users } from '../../../../config/seed';
 
 let wrapper, state, logInSpy, user;

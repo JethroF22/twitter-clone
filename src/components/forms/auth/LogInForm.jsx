@@ -3,11 +3,11 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import validator from 'validator';
 
-import { logIn } from '../../actions/auth';
+import { logIn } from '../../../actions/auth';
 import {
   actionStatusMessages,
   errorMessages
-} from '../../../config/const.json';
+} from '../../../../config/const.json';
 
 const {
   SUCCESS_MESSAGE,

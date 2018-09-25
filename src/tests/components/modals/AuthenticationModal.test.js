@@ -2,8 +2,8 @@ import React from 'react';
 import { shallow } from 'enzyme';
 
 import AuthenticationModal from '../../../components/modals/AuthenticationModal';
-import LogInForm from '../../../components/forms/LogInForm';
-import RegistrationForm from '../../../components/forms/RegistrationForm';
+import LogInForm from '../../../components/forms/auth/LogInForm';
+import RegistrationForm from '../../../components/forms/auth/RegistrationForm';
 
 let wrapper, modalIsOpen, modalContent, triggerModal, closeModal;
 

@@ -16,6 +16,18 @@ const TweetSchema = new mongoose.Schema({
     _id: {
       type: mongoose.Schema.Types.ObjectId,
       required: true
+    },
+    photo: {
+      type: String,
+      validate: {
+        validator: validator.isURL,
+        message: '"{VALUE}" is not a valid URL'
+      }
+    },
+    handle: {
+      type: String,
+      required: true,
+      minLength: 6
     }
   },
   timestamp: {

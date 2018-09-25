@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { registerUser } from '../../actions/auth';
+import { registerUser } from '../../../actions/auth';
 import _ from 'lodash';
 
-import { validateRegistrationForm } from '../../utils/formValidation';
+import { validateRegistrationForm } from '../../../utils/formValidation';
 import {
   actionStatusMessages,
   errorMessages
-} from '../../../config/const.json';
+} from '../../../../config/const.json';
 
 const {
   SUCCESS_MESSAGE,

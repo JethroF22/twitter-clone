@@ -8,6 +8,6 @@ export default (state = {}, action) => {
     case VIEW_PROFILE:
       return { ...state, viewedProfile: action.profile };
     default:
-      break;
+      return state;
   }
 };

@@ -4,7 +4,8 @@ export default (state = {}, action) => {
       return {
         ...state,
         name: action.name,
-        handle: action.handle
+        handle: action.handle,
+        _id: action._id
       };
     case 'SET_TOKEN':
       return {

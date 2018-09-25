@@ -12,7 +12,7 @@ import {
 
 const { SUCCESS_MESSAGE } = actionStatusMessages;
 
-class TweetForm extends Component {
+export class TweetForm extends Component {
   state = {
     body: ''
   };

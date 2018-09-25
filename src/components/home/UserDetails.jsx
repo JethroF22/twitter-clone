@@ -4,9 +4,9 @@ import { connect } from 'react-redux';
 import { getUserProfile } from '../../actions/profile';
 import { actionStatusMessages } from '../../../config/const.json';
 
-const { SUCCESS_MESSAGE, IN_PROGRESS_MESSAGE } = actionStatusMessages;
+const { SUCCESS_MESSAGE } = actionStatusMessages;
 
-class UserDetails extends Component {
+export class UserDetails extends Component {
   componentDidMount() {
     this.props.getUserProfile(this.props.id, this.props.name);
   }
@@ -31,8 +31,8 @@ class UserDetails extends Component {
 
 const mapStateToProps = state => ({
   profile: state.profile.userProfile,
-  name: state.auth.name || 'Adhara',
-  id: state.auth._id || '5ba01f48c457690f347888a2',
+  name: state.auth.name,
+  id: state.auth._id,
   tweets: state.tweet.tweets || [],
   actionStatus: state.status.actionStatus
 });

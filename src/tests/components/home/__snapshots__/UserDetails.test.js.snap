@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`UserDetails should render correctly 1`] = `
+<div>
+  <img
+    src="https://images.pexels.com/photos/1130287/pexels-photo-1130287.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350"
+  />
+  <img
+    src="https://images.pexels.com/photos/1416822/pexels-photo-1416822.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+  />
+  <h4>
+    Alexandra
+  </h4>
+  <p>
+    QueenAlexa
+  </p>
+  <p>
+    0
+     tweets
+  </p>
+  <p>
+    0
+     followers
+  </p>
+  <p>
+    0
+     following
+  </p>
+</div>
+`;
